@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for checking that the host system meets the
+# minimum bison prerequisites for building Wander
+#
+# The minimum prerequisites are:
+#  * Bison-2.7 (/usr/bin/yacc should be a link to bison or small script that executes bison)
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Probe Bison version
+status="${COLOUR_FOREGROUND_RED}Bison-2.7 (with /usr/bin/yacc linking to bison) required."
+result=1
+
+version=$(bison --version | head -n 1 | rev | cut -d ' ' -f 1 | rev)
+
+if { [ $(cut -d '.' -f 1 <<< $version) -gt 2 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 2 ] && [ $(cut -d '.' -f 2 <<< $version) -ge 7 ]; }; then
+	if [ -h "/usr/bin/yacc" ] || [ -x "/usr/bin/yacc" ]; then
+		status="${COLOUR_FOREGROUND_GREEN}ok"
+		result=0
+	fi
+fi
+
+echo -e " * Bison     $status$COLOUR_RESET"
+return $result

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for taking down global variables used in the
+# installer
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Take down the OS Specifics
+unset WANDER_VERSION
+unset WANDER_CODENAME

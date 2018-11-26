@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for setting up the installer
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Set up global variables
+source install/var/setup
+
+# Set up the colours
+source install/colour/setup

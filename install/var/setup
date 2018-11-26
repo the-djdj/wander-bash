@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for setting up global variables used in the
+# installer.
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Set up the OS specifics
+export WANDER_VERSION="18.8.3-systemd"
+export WANDER_CODENAME="Rose"

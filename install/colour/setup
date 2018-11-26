@@ -1,0 +1,69 @@
+#!/bin/bash
+
+#
+# This file contains basic colour information so that colours can be used
+# throughout the installation
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Basic Markup
+export COLOUR_SET_BOLD="\e[1m"
+export COLOUR_SET_DIM="\e[2m"
+export COLOUR_SET_UNDERLINE="\e[4m"
+export COLOUR_SET_BLINK="\e[5m"
+export COLOUR_SET_REVERSE="\e[7m"
+export COLOUR_SET_HIDDEN="\e[8m"
+
+# Reset
+export COLOUR_RESET="\e[0m"
+export COLOUR_RESET_BOLD="\e[21m"
+export COLOUR_RESET_DIM="\e[22m"
+export COLOUR_RESET_UNDERLINE="\e[24m"
+export COLOUR_RESET_BLINK="\e[25m"
+export COLOUR_RESET_REVERSE="\e[27m"
+export COLOUR_RESET_HIDDEN="\e[28m"
+
+# 8/16 Foreground Colours
+export COLOUR_FOREGROUND_DEFAULT="\e[39m"
+export COLOUR_FOREGROUND_BLACK="\e[30m"
+export COLOUR_FOREGROUND_RED="\e[31m"
+export COLOUR_FOREGROUND_GREEN="\e[32m"
+export COLOUR_FOREGROUND_YELLOW="\e[33m"
+export COLOUR_FOREGROUND_BLUE="\e[34m"
+export COLOUR_FOREGROUND_MAGENTA="\e[35m"
+export COLOUR_FOREGROUND_CYAN="\e[36m"
+export COLOUR_FOREGROUND_GREY_LIGHT="\e[37m"
+export COLOUR_FOREGROUND_GREY_DARK="\e[90m"
+export COLOUR_FOREGROUND_RED_LIGHT="\e[91m"
+export COLOUR_FOREGROUND_GREEN_LIGHT="\e[92m"
+export COLOUR_FOREGROUND_YELLOW_LIGHT="\e[93m"
+export COLOUR_FOREGROUND_BLUE_LIGHT="\e[94m"
+export COLOUR_FOREGROUND_MAGENTA_LIGHT="\e[95m"
+export COLOUR_FOREGROUND_CYAN_LIGHT="\e[96m"
+export COLOUR_FOREGROUND_WHITE="\e[97m"
+
+# 8/16 Background Colours
+export COLOUR_BACKGROUND_DEFAULT="\e[49m"
+export COLOUR_BACKGROUND_BLACK="\e[40m"
+export COLOUR_BACKGROUND_RED="\e[41m"
+export COLOUR_BACKGROUND_GREEN="\e[42m"
+export COLOUR_BACKGROUND_YELLOW="\e[43m"
+export COLOUR_BACKGROUND_BLUE="\e[44m"
+export COLOUR_BACKGROUND_MAGENTA="\e[45m"
+export COLOUR_BACKGROUND_CYAN="\e[46m"
+export COLOUR_BACKGROUND_GREY_LIGHT="\e[47m"
+export COLOUR_BACKGROUND_GREY_DARK="\e[100m"
+export COLOUR_BACKGROUND_RED_LIGHT="\e[101m"
+export COLOUR_BACKGROUND_GREEN_LIGHT="\e[102m"
+export COLOUR_BACKGROUND_YELLOW_LIGHT="\e[103m"
+export COLOUR_BACKGROUND_BLUE_LIGHT="\e[104m"
+export COLOUR_BACKGROUND_MAGENTA_LIGHT="\e[105m"
+export COLOUR_BACKGROUND_CYAN_LIGHT="\e[106m"
+export COLOUR_BACKGROUND_WHITE="\e[107m"
+
+# Finally, make a nice little function for combining two codes
+function COLOUR_COMBINE {
+	echo "${1::-1};${2:3}"
+}

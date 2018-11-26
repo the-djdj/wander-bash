@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for taking down the installer
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Take down the global variables
+source install/var/takedown
+
+# Take down the colours
+source install/colour/takedown

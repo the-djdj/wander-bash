@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for checking that the host system meets the
+# minimum bzip2 prerequisites for building Wander
+#
+# The minimum prerequisites are:
+#  * Bzip2-1.0.4
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Probe Bison version
+status="${COLOUR_FOREGROUND_RED}Bzip2-1.0.4"
+result=1
+
+version=$(bzip2 --version 2>&1 < /dev/null | head -n 1 | cut -d ' ' -f 8 | cut -d ',' -f 1)
+
+if { [ $(cut -d '.' -f 1 <<< $version) -gt 1 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -ge 0 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 0 ] && [ $(cut -d '.' -f 3 <<< $version) -ge 4 ]; } then
+	status="${COLOUR_FOREGROUND_GREEN}ok"
+	result=0
+fi
+
+echo -e " * Bzip2     $status$COLOUR_RESET"
+return $result

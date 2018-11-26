@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#
+# The entrance script into the wander build system. This controls the entire
+# process, and makes sure everything works properly
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Set up the installer
+source install/setup
+
+# Clear the screen
+clear
+
+# Do our logic
+source install/welcome
+source build/prerequisites
+
+# Take down the installer
+source install/takedown
