@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for checking that the host system meets the
+# minimum diffutils prerequisites for building Wander
+#
+# The minimum prerequisites are:
+#  * Diffutils-2.8.1
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Probe Coreutils version
+status="${COLOUR_FOREGROUND_RED}Diffutils-2.8.1 required."
+result=1
+
+version=$(diff --version | head -n 1 | rev | cut -d ' ' -f 1 | rev)
+
+if { [ $(cut -d '.' -f 1 <<< $version) -gt 2 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 2 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 8 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 2 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 8 ] && [ $(cut -d '.' -f 3 <<< $version) -ge 1 ]; }; then
+	status="${COLOUR_FOREGROUND_GREEN}ok"
+	result=0
+fi
+
+echo -e " * Diffutils $status$COLOUR_RESET"
+return $result

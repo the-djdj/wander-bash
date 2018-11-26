@@ -46,6 +46,7 @@ source build/dependencies/binutils  ; success=$(($success | $result))
 source build/dependencies/bison     ; success=$(($success | $result))
 source build/dependencies/bzip2     ; success=$(($success | $result))
 source build/dependencies/coreutils ; success=$(($success | $result))
+source build/dependencies/diffutils ; success=$(($success | $result))
 
 # Output results
 if [ $success -eq 0 ]; then
