@@ -11,7 +11,7 @@
 # @since  8.3-systemd
 #
 
-# Probe Coreutils version
+# Probe Diffutils version
 status="${COLOUR_FOREGROUND_RED}Diffutils-2.8.1 required."
 result=1
 
