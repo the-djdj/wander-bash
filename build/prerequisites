@@ -73,7 +73,7 @@ else
 	status="${COLOUR_FOREGROUND_RED}failed"
 fi
 
-echo -e "Prerequisites test $status${COLOUR_RESET}."
+echo -n -e "Prerequisites test $status${COLOUR_RESET}."
 
 
 # And cleanup

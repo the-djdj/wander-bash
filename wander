@@ -14,9 +14,31 @@ source install/setup
 # Clear the screen
 clear
 
-# Do our logic
+# Display a welcome message
 source install/welcome
+
+# Check that our host system meets the requirements
 source build/prerequisites
+if [ $success -ne 0 ]; then
+	# What do we do if the system does not meet the minimum requirements?
+	read -p  " Do you want to continue the build anyway? (y/n) " reply
+	case $reply in
+		[Yy])	echo "" ;;
+		[Nn])	echo "Exiting. See you soon!"
+				source install/takedown
+				exit ;;
+		   *)	echo "Unrecognised input. Exiting."
+				source install/takedown
+				exit ;;
+	esac
+else
+	# Do some nice spacing
+	echo ""
+	echo ""
+fi
+
+# Start with the filesystem preparations
+source build/init/filesystem
 
 # Take down the installer
 source install/takedown
