@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for setting up the file system on which to
+# build Wander.
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Show a nice welcome message
+echo -e "$(COLOUR_COMBINE $COLOUR_SET_BOLD $COLOUR_FOREGROUND_GREY_LIGHT)Setting up filesystems:$COLOUR_RESET"
