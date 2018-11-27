@@ -11,11 +11,13 @@
 # @since  8.3-systemd
 #
 
-# Probe Gzip version
+# Probe M4 version
 status="${COLOUR_FOREGROUND_RED}M4-1.4.10 required."
 result=1
 
-version=$(m4 --version | head -n 1 | rev | cut -d ' ' -f 1 | rev)
+echo -n " * M4                   "
+
+version=$(m4 --version | head -n 1 | cut -d ' ' -f 4)
 
 if { [ $(cut -d '.' -f 1 <<< $version) -gt 1 ]; } ||
    { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 4 ]; } ||
@@ -24,5 +26,5 @@ if { [ $(cut -d '.' -f 1 <<< $version) -gt 1 ]; } ||
 	result=0
 fi
 
-echo -e " * M4           $status$COLOUR_RESET"
+echo -e "$status$COLOUR_RESET"
 return $result

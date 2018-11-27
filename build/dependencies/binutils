@@ -15,6 +15,8 @@
 status="${COLOUR_FOREGROUND_RED}Binutils-2.25 required."
 result=1
 
+echo -n " * Binutils             "
+
 version=$(ld --version | head -n 1 | rev | cut -d ' ' -f 1 | rev)
 
 if { [ $(cut -d '.' -f 1 <<< $version) -gt 2 ]; } ||
@@ -29,5 +31,5 @@ if { [ $(cut -d '.' -f 1 <<< $version) -gt 2 ]; } ||
 	fi
 fi
 
-echo -e " * Binutils     $status$COLOUR_RESET"
+echo -e "$status$COLOUR_RESET"
 return $result

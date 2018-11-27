@@ -15,6 +15,8 @@
 status="${COLOUR_FOREGROUND_RED}Perl-5.8.8 required."
 result=1
 
+echo -n " * Perl                 "
+
 version=$(perl -V:version | cut -d "'" -f 2)
 
 if { [ $(cut -d '.' -f 1 <<< $version) -gt 5 ]; } ||
@@ -24,5 +26,5 @@ if { [ $(cut -d '.' -f 1 <<< $version) -gt 5 ]; } ||
 	result=0
 fi
 
-echo -e " * Perl         $status$COLOUR_RESET"
+echo -e "$status$COLOUR_RESET"
 return $result

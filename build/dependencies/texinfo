@@ -15,7 +15,9 @@
 status="${COLOUR_FOREGROUND_RED}Texinfo-4.7 required."
 result=1
 
-version=$(makeinfo --version | head -n 1 | rev | cut -d ' ' -f 1 | rev)
+echo -n " * Texinfo              "
+
+version=$(makeinfo --version | head -n 1 | cut -d ' ' -f 4)
 
 if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
    { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -ge 7 ]; }; then
@@ -23,5 +25,5 @@ if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
 	result=0
 fi
 
-echo -e " * Texinfo      $status$COLOUR_RESET"
+echo -e "$status$COLOUR_RESET"
 return $result

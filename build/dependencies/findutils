@@ -11,11 +11,13 @@
 # @since  8.3-systemd
 #
 
-# Probe Diffutils version
+# Probe Findutils version
 status="${COLOUR_FOREGROUND_RED}Findutils-4.2.31 required."
 result=1
 
-version=$(find --version | head -n 1 | rev | cut -d ' ' -f 1 | rev | cut -d '-' -f 1)
+echo -n " * Findutils            "
+
+version=$(find --version | head -n 1 | cut -d ' ' -f 4 | cut -d '-' -f 1)
 
 if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
    { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 2 ]; } ||
@@ -24,5 +26,5 @@ if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
 	result=0
 fi
 
-echo -e " * Findutils    $status$COLOUR_RESET"
+echo -e "$status$COLOUR_RESET"
 return $result
