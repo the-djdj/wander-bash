@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for checking that the host system meets the
+# minimum make prerequisites for building Wander
+#
+# The minimum prerequisites are:
+#  * Make-4.0
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Probe Make version
+status="${COLOUR_FOREGROUND_RED}Make-4.0 required."
+result=1
+
+version=$(make --version | head -n 1 | cut -d ' ' -f 3)
+
+if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -ge 0 ]; }; then
+	status="${COLOUR_FOREGROUND_GREEN}ok"
+	result=0
+fi
+
+echo -e " * Make         $status$COLOUR_RESET"
+return $result
