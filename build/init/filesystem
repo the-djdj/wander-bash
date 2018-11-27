@@ -24,7 +24,7 @@ if [ ! -z $swap_partition ]; then
 		status="${COLOUR_FOREGROUND_RED}failed"
 	fi
 else
-	status="${COLOUR_FOREGROUND_YELLOW}skipped"
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
 fi
 
 echo -e "$status$COLOUR_RESET"
