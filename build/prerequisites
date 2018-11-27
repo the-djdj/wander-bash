@@ -49,6 +49,8 @@ source build/dependencies/coreutils ; success=$(($success | $result))
 source build/dependencies/diffutils ; success=$(($success | $result))
 source build/dependencies/findutils ; success=$(($success | $result))
 source build/dependencies/gawk      ; success=$(($success | $result))
+source build/dependencies/gcc       ; success=$(($success | $result))
+source build/dependencies/g++       ; success=$(($success | $result))
 
 # Output results
 if [ $success -eq 0 ]; then
