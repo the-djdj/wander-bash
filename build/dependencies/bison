@@ -25,5 +25,5 @@ if { [ $(cut -d '.' -f 1 <<< $version) -gt 2 ]; } ||
 	fi
 fi
 
-echo -e " * Bison     $status$COLOUR_RESET"
+echo -e " * Bison        $status$COLOUR_RESET"
 return $result

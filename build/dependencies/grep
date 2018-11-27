@@ -24,5 +24,5 @@ if { [ $(cut -d '.' -f 1 <<< $version) -gt 2 ]; } ||
 	result=0
 fi
 
-echo -e " * Grep      $status$COLOUR_RESET"
+echo -e " * Grep         $status$COLOUR_RESET"
 return $result

@@ -29,5 +29,5 @@ if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
 	fi
 fi
 
-echo -e " * GCC       $status$COLOUR_RESET"
+echo -e " * GCC          $status$COLOUR_RESET"
 return $result
