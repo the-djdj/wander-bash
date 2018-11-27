@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for taking down the config used in the
+# installer
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Take down the config file location
+unset CONFIG_FILE
+
+# And remove the actual stored settings
+unset swap_partition
+unset os_partition
+unset format_partition

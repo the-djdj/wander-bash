@@ -9,5 +9,5 @@
 #
 
 # Set up the OS specifics
-export WANDER_VERSION="18.8.3-systemd"
+export WANDER_VERSION="8.3-systemd"
 export WANDER_CODENAME="Rose"

@@ -1,0 +1,46 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for setting up and loading the config for the
+# installer
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Store the file location
+CONFIG_FILE=".config"
+
+# Check if the config file exists
+if [ ! -f $CONFIG_FILE ]; then
+    # The file doesn't exist, so it needs to be written
+	echo "#!/bin/bash"																		>> $CONFIG_FILE
+	echo ""																					>> $CONFIG_FILE
+	echo "# The Wander config file. It contains the basic settings for building the"		>> $CONFIG_FILE
+	echo "# operating system. It's pretty self-explanatory. Don't worry, you got this ;)"	>> $CONFIG_FILE
+	echo ""																					>> $CONFIG_FILE
+	echo ""																					>> $CONFIG_FILE
+	echo "# A swap partition comes in handy when the available memory on a system starts"	>> $CONFIG_FILE
+	echo "# to run low. The Wander build system can create a new swap partition for you if"	>> $CONFIG_FILE
+	echo "# need be. To create a new swap partition (or format an existing partition as"	>> $CONFIG_FILE
+	echo "# swap), enter the name of the partition below. To use an existing swap"			>> $CONFIG_FILE
+	echo "# partition, or simple to bypass this, leave this field blank. If creating a new"	>> $CONFIG_FILE
+	echo "# swap, ensure that the partition has at least 2 Gb of space available."			>> $CONFIG_FILE
+	echo "#"																				>> $CONFIG_FILE
+	echo "# Example: swap-partition=/dev/sda5"												>> $CONFIG_FILE
+	echo "swap_partition="																	>> $CONFIG_FILE
+	echo ""																					>> $CONFIG_FILE
+	echo "# Which partition should Wander be installed onto? If you are planning to use"	>> $CONFIG_FILE
+	echo "# Wander as your primary operating system, a minimum size of 20 Gb is"			>> $CONFIG_FILE
+	echo "# recommended."																	>> $CONFIG_FILE
+	echo "#"																				>> $CONFIG_FILE
+	echo "# Example: os-partition=/dev/sda2"												>> $CONFIG_FILE
+	echo "os_partition=/dev/sdb1"															>> $CONFIG_FILE
+	echo ""																					>> $CONFIG_FILE
+	echo "# Should Wander format the partition before building begins? If not, ensure that"	>> $CONFIG_FILE
+	echo "# it is of type ext4. Simply type 'yes' or 'no'"									>> $CONFIG_FILE
+	echo "format_partition=yes"																>> $CONFIG_FILE
+fi
+
+# And load the file
+source $CONFIG_FILE

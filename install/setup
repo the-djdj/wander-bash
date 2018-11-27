@@ -12,3 +12,6 @@ source install/var/setup
 
 # Set up the colours
 source install/colour/setup
+
+# Load the config
+source install/config/setup
