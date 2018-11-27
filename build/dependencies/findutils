@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for checking that the host system meets the
+# minimum findutils prerequisites for building Wander
+#
+# The minimum prerequisites are:
+#  * Findutils-4.2.31
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Probe Diffutils version
+status="${COLOUR_FOREGROUND_RED}Findutils-4.2.31 required."
+result=1
+
+version=$(find --version | head -n 1 | rev | cut -d ' ' -f 1 | rev | cut -d '-' -f 1)
+
+if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 2 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 2 ] && [ $(cut -d '.' -f 3 <<< $version) -ge 31 ]; }; then
+	status="${COLOUR_FOREGROUND_GREEN}ok"
+	result=0
+fi
+
+echo -e " * Findutils $status$COLOUR_RESET"
+return $result
