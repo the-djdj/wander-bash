@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for checking that the host system meets the
+# minimum xz prerequisites for building Wander
+#
+# The minimum prerequisites are:
+#  * Xz-5.0.0
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Probe Xz version
+status="${COLOUR_FOREGROUND_RED}Xz-5.0.0 required."
+result=1
+
+version=$(xz --version | head -n 1 | cut -d ' ' -f 4)
+
+if { [ $(cut -d '.' -f 1 <<< $version) -gt 5 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 5 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 0 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 5 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 0 ] && [ $(cut -d '.' -f 3 <<< $version) -ge 0 ]; }; then
+	status="${COLOUR_FOREGROUND_GREEN}ok"
+	result=0
+fi
+
+echo -e " * Xz           $status$COLOUR_RESET"
+return $result
