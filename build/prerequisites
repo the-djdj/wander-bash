@@ -57,6 +57,7 @@ source build/dependencies/gzip      ; success=$(($success | $result))
 source build/dependencies/linux     ; success=$(($success | $result))
 source build/dependencies/m4        ; success=$(($success | $result))
 source build/dependencies/make      ; success=$(($success | $result))
+source build/dependencies/patch     ; success=$(($success | $result))
 
 # Output results
 if [ $success -eq 0 ]; then
