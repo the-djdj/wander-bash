@@ -54,6 +54,7 @@ source build/dependencies/g++       ; success=$(($success | $result))
 source build/dependencies/glibc     ; success=$(($success | $result))
 source build/dependencies/grep      ; success=$(($success | $result))
 source build/dependencies/gzip      ; success=$(($success | $result))
+source build/dependencies/linux     ; success=$(($success | $result))
 
 # Output results
 if [ $success -eq 0 ]; then

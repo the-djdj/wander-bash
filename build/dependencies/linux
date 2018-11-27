@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for checking that the host system meets the
+# minimum linux kernel prerequisites for building Wander
+#
+# The minimum prerequisites are:
+#  * Linux Kernel-3.2
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Probe Linux Kernel version
+status="${COLOUR_FOREGROUND_RED}Linux Kernel-3.2 required."
+result=1
+
+version=$(cat /proc/version | cut -d ' ' -f 3 | cut -d '-' -f 1)
+
+if { [ $(cut -d '.' -f 1 <<< $version) -gt 3 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 3 ] && [ $(cut -d '.' -f 2 <<< $version) -ge 2 ]; }; then
+	status="${COLOUR_FOREGROUND_GREEN}ok"
+	result=0
+fi
+
+echo -e " * Linux Kernel $status$COLOUR_RESET"
+return $result
