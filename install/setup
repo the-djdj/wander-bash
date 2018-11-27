@@ -15,3 +15,7 @@ source install/colour/setup
 
 # Load the config
 source install/config/setup
+
+# Create the log directories
+mkdir logs      &> /dev/null
+mkdir logs/init &> /dev/null

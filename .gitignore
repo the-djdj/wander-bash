@@ -1,3 +1,5 @@
 # The gitignore file for Wander
 *.swp
 .config
+
+logs/
