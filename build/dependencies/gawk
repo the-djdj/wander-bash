@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for checking that the host system meets the
+# minimum gawk prerequisites for building Wander
+#
+# The minimum prerequisites are:
+#  * Gawk-4.0.1 (/usr/bin/awk should be a link to gawk) 
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Probe Gawk version
+status="${COLOUR_FOREGROUND_RED}Gawk-4.0.1 (with usr/bin/awk linking to gawk) required."
+result=1
+
+version=$(gawk --version | head -n 1 | cut -d ' ' -f 3 | cut -d ',' -f 1)
+
+if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 0 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 0 ] && [ $(cut -d '.' -f 3 <<< $version) -ge 1 ]; }; then
+	if [ -h "/usr/bin/awk" ] || [ -x "/usr/bin/awk" ]; then
+	   	status="${COLOUR_FOREGROUND_GREEN}ok"
+		result=0
+	fi
+fi
+
+echo -e " * Gawk      $status$COLOUR_RESET"
+return $result
