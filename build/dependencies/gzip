@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for checking that the host system meets the
+# minimum gzip prerequisites for building Wander
+#
+# The minimum prerequisites are:
+#  * Gzip-1.3.12
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Probe Gzip version
+status="${COLOUR_FOREGROUND_RED}Gzip-1.3.12 required."
+result=1
+
+version=$(gzip --version | head -n 1 | cut -d ' ' -f 2)
+
+if { [ $(cut -d '.' -f 1 <<< $version) -gt 1 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 3 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 3 ] && [ $(cut -d '.' -f 3 <<< $version) -ge 12 ]; }; then
+	status="${COLOUR_FOREGROUND_GREEN}ok"
+	result=0
+fi
+
+echo -e " * Gzip      $status$COLOUR_RESET"
+return $result
