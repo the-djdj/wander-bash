@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Findutils-4.2.31 required."
 result=1
 
-echo -n " * Findutils            "
+echo -n " * Findutils                     "
 
 version=$(find --version | head -n 1 | cut -d ' ' -f 4 | cut -d '-' -f 1)
 
@@ -26,5 +26,5 @@ if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
 	result=0
 fi
 
-echo -e "$status$COLOUR_RESET"
+echo -e $status $COLOUR_RESET
 return $result
