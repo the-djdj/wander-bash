@@ -10,3 +10,21 @@
 
 # Show a nice welcome message
 echo -e "$(COLOUR_COMBINE $COLOUR_SET_BOLD $COLOUR_FOREGROUND_GREY_LIGHT)Setting up filesystems:$COLOUR_RESET"
+
+
+# Set up the swap partition
+echo -n " * Setting up the swap partition "
+status="${COLOUR_FOREGROUND_RED}failed"
+
+if [ ! -z $swap_partition ]; then
+	result=$(mkswap $swap_partition &> "logs/init/mkswap.log")
+	if [ $? -eq 0 ]; then
+		status="${COLOUR_FOREGROUND_GREEN}ok"
+	else
+		status="${COLOUR_FOREGROUND_RED}failed"
+	fi
+else
+	status="${COLOUR_FOREGROUND_YELLOW}skipped"
+fi
+
+echo -e "$status$COLOUR_RESET"
