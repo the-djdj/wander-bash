@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for checking that the host system meets the
+# minimum g++ compiler prerequisites for building Wander
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Test G++ Compiler
+status="${COLOUR_FOREGROUND_RED}failed."
+result=1
+
+# Create a dummy program to compile
+echo 'int main(){}' > dummy.c && g++ -o dummy dummy.c
+
+# Test that the file is executable
+if [ -x dummy ]; then
+	status="${COLOUR_FOREGROUND_GREEN}ok"
+	result=0
+fi
+
+# And then remove the files
+rm -f dummy.c dummy
+
+echo -e " * Testing G++ compiler $status$COLOUR_RESET"
+return $result

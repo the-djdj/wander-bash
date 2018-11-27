@@ -61,6 +61,9 @@ source build/dependencies/patch     ; success=$(($success | $result))
 source build/dependencies/perl      ; success=$(($success | $result))
 source build/dependencies/sed       ; success=$(($success | $result))
 source build/dependencies/tar       ; success=$(($success | $result))
+source build/dependencies/texinfo   ; success=$(($success | $result))
+source build/dependencies/xz        ; success=$(($success | $result))
+source build/dependencies/compiler  ; success=$(($success | $result))
 
 
 # Output results
