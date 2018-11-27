@@ -59,6 +59,7 @@ source build/dependencies/m4        ; success=$(($success | $result))
 source build/dependencies/make      ; success=$(($success | $result))
 source build/dependencies/patch     ; success=$(($success | $result))
 source build/dependencies/perl      ; success=$(($success | $result))
+source build/dependencies/sed       ; success=$(($success | $result))
 
 
 # Output results
