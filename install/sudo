@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for testing whether or not Wander is being run
+# as a superuser
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Check if we are running with elevated privileges
+if [ $(id -u) -ne 0 ]; then
+	echo "The Wander build system requires elevated privileges to run properly. Exiting."
+	source install/takedown
+	exit
+fi

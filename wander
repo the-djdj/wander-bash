@@ -17,6 +17,9 @@ clear
 # Display a welcome message
 source install/welcome
 
+# Firstly, check that we are running as a superuser
+source install/sudo
+
 # Check that our host system meets the requirements
 source build/prerequisites
 if [ $success -ne 0 ]; then
