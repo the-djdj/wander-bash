@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for checking that the host system meets the
+# minimum glibc prerequisites for building Wander
+#
+# The minimum prerequisites are:
+#  * Glibc-2.11 (Versions greater than 2.28 are not recommended as they have not been tested)
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Probe Glibc version
+status="${COLOUR_FOREGROUND_RED}Glibc-2.11 required."
+result=1
+
+version=$(ldd --version | head -n 1 | rev | cut -d ' ' -f 1 | rev)
+
+if { [ $(cut -d '.' -f 1 <<< $version) -gt 2 ]; } ||
+   { [ $(cut -d '.' -f 1 <<< $version) -eq 2 ] && [ $(cut -d '.' -f 2 <<< $version) -ge 11 ]; }; then
+	status="${COLOUR_FOREGROUND_GREEN}ok"
+	result=0
+
+	if { [ $(cut -d '.' -f 1 <<< $version) -gt 2 ]; } ||
+	   { [ $(cut -d '.' -f 1 <<< $version) -eq 2 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 28 ]; }; then
+		status="${COLOUR_FOREGROUND_YELLOW}warning${COLOUR_RESET}. Versions greater than 2.28 have not been tested."
+	fi
+fi
+
+echo -e " * Glibc     $status$COLOUR_RESET"
+return $result
