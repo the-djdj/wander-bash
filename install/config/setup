@@ -40,6 +40,13 @@ if [ ! -f $CONFIG_FILE ]; then
 	echo "# Should Wander format the partition before building begins? If not, ensure that"	>> $CONFIG_FILE
 	echo "# it is of type ext4. Simply type 'yes' or 'no'"									>> $CONFIG_FILE
 	echo "format_partition=yes"																>> $CONFIG_FILE
+	echo ""																					>> $CONFIG_FILE
+	echo ""																					>> $CONFIG_FILE
+	echo "# What should the local mountpoint for your Wander system be? This is important"	>> $CONFIG_FILE
+	echo "# so that Wander's file system can be mounted properly."							>> $CONFIG_FILE
+	echo "#"																				>> $CONFIG_FILE
+	echo "# Example: wander=/mnt/wander"													>> $CONFIG_FILE
+	echo "wander=/mnt/wander-os"															>> $CONFIG_FILE
 fi
 
 # And load the file

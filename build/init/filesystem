@@ -17,7 +17,40 @@ echo -n " * Setting up the root file system "
 status="${COLOUR_FOREGROUND_RED}failed"
 	
 if [ $format_partition = "yes" ]; then
-	result=$(mkfs -v -t ext4 $os_partition &> "logs/init/mkfs.log")
+	result=$(mkfs -v -t ext4 $os_partition &> logs/init/mkfs.log)
+	if [ $? -eq 0 ]; then
+		status="${COLOUR_FOREGROUND_GREEN}ok"
+	fi
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+fi
+
+echo -e $status $COLOUR_RESET
+
+
+# Create the Wander directory structure
+echo -n " * Creating root directory         "
+status="${COLOUR_FOREGROUND_RED}failed"
+
+if [ ! -d $wander ]; then
+	result=$(mkdir -pv $wander &> logs/init/mkdir.log)
+	if [ $? -eq 0 ]; then
+		status="${COLOUR_FOREGROUND_GREEN}ok"
+	fi
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+fi
+
+echo -e $status $COLOUR_RESET
+
+
+# Mount the Wander partition
+echo -n " * Mounting root partition         "
+status="${COLOUR_FOREGROUND_RED}failed"
+
+result=$(grep -qs $os_partition /proc/mounts)
+if [ $? -ne 0 ]; then
+	result=$(mount -v -t ext4 $os_partition $wander &> logs/init/mount.log)
 	if [ $? -eq 0 ]; then
 		status="${COLOUR_FOREGROUND_GREEN}ok"
 	fi
@@ -33,9 +66,35 @@ echo -n " * Setting up the swap partition   "
 status="${COLOUR_FOREGROUND_RED}failed"
 
 if [ ! -z $swap_partition ]; then
-	result=$(mkswap $swap_partition &> "logs/init/mkswap.log")
-	if [ $? -eq 0 ]; then
-		status="${COLOUR_FOREGROUND_GREEN}ok"
+	result=$(grep -eq $swap_partition /proc/swaps)
+	if [ $? -ne 0 ]; then
+		result=$(mkswap $swap_partition &> logs/init/mkswap.log)
+		if [ $? -eq 0 ]; then
+			status="${COLOUR_FOREGROUND_GREEN}ok"
+		fi
+	else
+		status="${COLOUR_FOREGROUND_BLUE}skipped"
+	fi
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+fi
+
+echo -e $status $COLOUR_RESET
+
+
+# Activate the swap partition
+echo -n " * Activating swap parition        "
+status="${COLOUR_FOREGROUND_RED}failed"
+
+if [ ! -z $swap_partition ]; then
+	result=$(grep -qs $swap_partition /proc/swaps)
+	if [ $? -ne 0 ]; then
+		result=$(/sbin/swapon -v $swap_partition &> logs/init/swapon.log)
+		if [ $? -eq 0 ]; then
+			status="${COLOUR_FOREGROUND_GREEN}ok"
+		fi
+	else
+		status="${COLOUR_FOREGROUND_BLUE}skipped"
 	fi
 else
 	status="${COLOUR_FOREGROUND_BLUE}skipped"

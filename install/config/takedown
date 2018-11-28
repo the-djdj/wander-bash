@@ -15,3 +15,4 @@ unset CONFIG_FILE
 unset swap_partition
 unset os_partition
 unset format_partition
+unset wander
