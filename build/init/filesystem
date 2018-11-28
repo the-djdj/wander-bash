@@ -12,19 +12,33 @@
 echo -e "$(COLOUR_COMBINE $COLOUR_SET_BOLD $COLOUR_FOREGROUND_GREY_LIGHT)Setting up filesystems:$COLOUR_RESET"
 
 
+# Create the partition for Wander
+echo -n " * Setting up the root file system "
+status="${COLOUR_FOREGROUND_RED}failed"
+	
+if [ $format_partition = "yes" ]; then
+	result=$(mkfs -v -t ext4 $os_partition &> "logs/init/mkfs.log")
+	if [ $? -eq 0 ]; then
+		status="${COLOUR_FOREGROUND_GREEN}ok"
+	fi
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+fi
+
+echo -e $status $COLOUR_RESET
+
+
 # Set up the swap partition
-echo -n " * Setting up the swap partition "
+echo -n " * Setting up the swap partition   "
 status="${COLOUR_FOREGROUND_RED}failed"
 
 if [ ! -z $swap_partition ]; then
 	result=$(mkswap $swap_partition &> "logs/init/mkswap.log")
 	if [ $? -eq 0 ]; then
 		status="${COLOUR_FOREGROUND_GREEN}ok"
-	else
-		status="${COLOUR_FOREGROUND_RED}failed"
 	fi
 else
 	status="${COLOUR_FOREGROUND_BLUE}skipped"
 fi
 
-echo -e "$status$COLOUR_RESET"
+echo -e $status $COLOUR_RESET
