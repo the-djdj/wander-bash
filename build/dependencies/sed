@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Sed-4.1.5 required."
 result=1
 
-echo -n " * Sed                           "
+echo -n " * Sed                             "
 
 version=$(sed --version | head -n 1 | rev | cut -d ' ' -f 1 | rev)
 

@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Bash-3.2 (with /bin/sh linking to bash) required."
 result=1
 
-echo -n " * Bash                          "
+echo -n " * Bash                            "
 
 version=$(bash --version | head -n 1 | cut -d ' ' -f 4 | cut -d '(' -f 1)
 link=$(readlink -f /bin/sh)

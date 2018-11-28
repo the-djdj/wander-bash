@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Linux Kernel-3.2 required."
 result=1
 
-echo -n " * Linux Kernel                  "
+echo -n " * Linux Kernel                    "
 
 version=$(cat /proc/version | cut -d ' ' -f 3 | cut -d '-' -f 1)
 

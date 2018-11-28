@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Glibc-2.11 required."
 result=1
 
-echo -n " * Glibc                         "
+echo -n " * Glibc                           "
 
 version=$(ldd --version | head -n 1 | rev | cut -d ' ' -f 1 | rev)
 

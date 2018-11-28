@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Patch-2.5.4 required."
 result=1
 
-echo -n " * Patch                         "
+echo -n " * Patch                           "
 
 version=$(patch --version | head -n 1 | cut -d ' ' -f 3)
 

@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Coreutils-6.9 required."
 result=1
 
-echo -n " * Coreutils                     "
+echo -n " * Coreutils                       "
 
 version=$(chown --version | head -n 1 | cut -d ' ' -f 4)
 

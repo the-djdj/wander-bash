@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}M4-1.4.10 required."
 result=1
 
-echo -n " * M4                            "
+echo -n " * M4                              "
 
 version=$(m4 --version | head -n 1 | cut -d ' ' -f 4)
 

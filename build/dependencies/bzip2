@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Bzip2-1.0.4"
 result=1
 
-echo -n " * Bzip2                         "
+echo -n " * Bzip2                           "
 
 version=$(bzip2 --version 2>&1 < /dev/null | head -n 1 | cut -d ' ' -f 8 | cut -d ',' -f 1)
 

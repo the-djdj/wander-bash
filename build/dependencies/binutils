@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Binutils-2.25 required."
 result=1
 
-echo -n " * Binutils                      "
+echo -n " * Binutils                        "
 
 version=$(ld --version | head -n 1 | rev | cut -d ' ' -f 1 | rev)
 

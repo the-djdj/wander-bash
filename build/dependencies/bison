@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Bison-2.7 (with /usr/bin/yacc linking to bison) required."
 result=1
 
-echo -n " * Bison                         "
+echo -n " * Bison                           "
 
 version=$(bison --version | head -n 1 | cut -d ' ' -f 4)
 
