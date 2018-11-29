@@ -12,7 +12,7 @@
 status="${COLOUR_FOREGROUND_RED}failed."
 result=1
 
-echo -n " * Testing G++ compiler            "
+echo -n " * Testing G++ compiler                    "
 
 # Create a dummy program to compile
 echo 'int main(){}' > dummy.c && g++ -o dummy dummy.c

@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}G++-4.9 required."
 result=1
 
-echo -n " * G++                             "
+echo -n " * G++                                     "
 
 version=$(g++ --version | head -n 1 | rev | cut -d ' ' -f 2 | rev)
 

@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Xz-5.0.0 required."
 result=1
 
-echo -n " * Xz                              "
+echo -n " * Xz                                      "
 
 version=$(xz --version | head -n 1 | cut -d ' ' -f 4)
 

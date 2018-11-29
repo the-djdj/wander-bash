@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Perl-5.8.8 required."
 result=1
 
-echo -n " * Perl                            "
+echo -n " * Perl                                    "
 
 version=$(perl -V:version | cut -d "'" -f 2)
 

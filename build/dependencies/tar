@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Tar-1.22 required."
 result=1
 
-echo -n " * Tar                             "
+echo -n " * Tar                                     "
 
 version=$(tar --version | head -n 1 | cut -d ' ' -f 4)
 

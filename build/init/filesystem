@@ -13,7 +13,7 @@ echo -e "$(COLOUR_COMBINE $COLOUR_SET_BOLD $COLOUR_FOREGROUND_GREY_LIGHT)Setting
 
 
 # Create the partition for Wander
-echo -n " * Setting up the root file system "
+echo -n " * Setting up the root file system         "
 status="${COLOUR_FOREGROUND_RED}failed"
 	
 if [ $format_partition = "yes" ]; then
@@ -29,7 +29,7 @@ echo -e $status $COLOUR_RESET
 
 
 # Create the Wander directory structure
-echo -n " * Creating root directory         "
+echo -n " * Creating root directory                 "
 status="${COLOUR_FOREGROUND_RED}failed"
 
 if [ ! -d $wander ]; then
@@ -45,7 +45,7 @@ echo -e $status $COLOUR_RESET
 
 
 # Mount the Wander partition
-echo -n " * Mounting root partition         "
+echo -n " * Mounting root partition                 "
 status="${COLOUR_FOREGROUND_RED}failed"
 
 result=$(grep -qs $os_partition /proc/mounts)
@@ -62,7 +62,7 @@ echo -e $status $COLOUR_RESET
 
 
 # Set up the swap partition
-echo -n " * Setting up the swap partition   "
+echo -n " * Setting up the swap partition           "
 status="${COLOUR_FOREGROUND_RED}failed"
 
 if [ ! -z $swap_partition ]; then
@@ -83,7 +83,7 @@ echo -e $status $COLOUR_RESET
 
 
 # Activate the swap partition
-echo -n " * Activating swap parition        "
+echo -n " * Activating swap parition                "
 status="${COLOUR_FOREGROUND_RED}failed"
 
 if [ ! -z $swap_partition ]; then

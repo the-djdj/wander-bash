@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Gawk-4.0.1 (with usr/bin/awk linking to gawk) required."
 result=1
 
-echo -n " * Gawk                            "
+echo -n " * Gawk                                    "
 
 version=$(gawk --version | head -n 1 | cut -d ' ' -f 3 | cut -d ',' -f 1)
 

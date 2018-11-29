@@ -15,7 +15,7 @@
 status="${COLOUR_FOREGROUND_RED}Grep-2.5.1a required."
 result=1
 
-echo -n " * Grep                            "
+echo -n " * Grep                                    "
 
 version=$(grep --version | head -n 1 | cut -d ' ' -f 4)
 
