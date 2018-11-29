@@ -38,7 +38,7 @@ if [ ! -f $CONFIG_FILE ]; then
 	echo "os_partition=/dev/sdb1"															>> $CONFIG_FILE
 	echo ""																					>> $CONFIG_FILE
 	echo "# Should Wander format the partition before building begins? If not, ensure that"	>> $CONFIG_FILE
-	echo "# it is of type ext4. Simply type 'yes' or 'no'"									>> $CONFIG_FILE
+	echo "# it is of type ext4. Simply type 'yes' or 'no'."									>> $CONFIG_FILE
 	echo "format_partition=yes"																>> $CONFIG_FILE
 	echo ""																					>> $CONFIG_FILE
 	echo ""																					>> $CONFIG_FILE
@@ -47,6 +47,11 @@ if [ ! -f $CONFIG_FILE ]; then
 	echo "#"																				>> $CONFIG_FILE
 	echo "# Example: wander=/mnt/wander"													>> $CONFIG_FILE
 	echo "wander=/mnt/wander-os"															>> $CONFIG_FILE
+	echo ""																					>> $CONFIG_FILE
+	echo "# Should the sources be stored on the wander partition? If so, they will appear"	>> $CONFIG_FILE
+	echo "# in /mnt/wander-os/sources (for example). Otherwise, they will be stored in"		>> $CONFIG_FILE
+	echo "# the script's local folder. Simply type 'yes' or 'no'."							>> $CONFIG_FILE
+	echo "local_sources=no"																	>> $CONFIG_FILE
 fi
 
 # And load the file

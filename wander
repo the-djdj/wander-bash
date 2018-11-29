@@ -42,6 +42,10 @@ fi
 
 # Start with the filesystem preparations
 source build/init/filesystem
+echo ""
+
+# Do some final preparations
+source build/init/preparations
 
 # Take down the installer
 source install/takedown

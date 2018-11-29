@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for starting the build of the basic toolchain
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Get our variables back
+source install/setup
+
+# Complete the last message
+echo -e "${COLOUR_FOREGROUND_GREEN}ok$COLOUR_RESET"
+
+# And cleanup
+source install/takedown
