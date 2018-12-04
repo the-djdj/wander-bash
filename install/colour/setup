@@ -63,6 +63,9 @@ export COLOUR_BACKGROUND_MAGENTA_LIGHT="\e[105m"
 export COLOUR_BACKGROUND_CYAN_LIGHT="\e[106m"
 export COLOUR_BACKGROUND_WHITE="\e[107m"
 
+# And some other things
+export LINE_UP="\e[1A\n\e[0K\r$COLOUR_RESET"
+
 # Finally, make a nice little function for combining two codes
 function COLOUR_COMBINE {
 	echo "${1::-1};${2:3}"
