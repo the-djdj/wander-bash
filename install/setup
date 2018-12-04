@@ -17,5 +17,12 @@ source install/colour/setup
 source install/config/setup
 
 # Create the log directories
-mkdir logs      &> /dev/null
-mkdir logs/init &> /dev/null
+rm -rf logs					&> /dev/null
+mkdir logs					&> /dev/null
+mkdir logs/init				&> /dev/null
+mkdir logs/temp				&> /dev/null
+
+# Change the permissions
+chown -v wander logs		&> /dev/null
+chown -v wander logs/init	&> /dev/null
+chown -v wander logs/temp	&> /dev/null
