@@ -55,6 +55,7 @@ getfile() {
 	mkdir $directory/logs/temp/$2 &> /dev/null
 	if [ -f "$SOURCEDIR/$2" ]; then
 		if [ $3 != $(md5sum "$SOURCEDIR/$2" | cut -d ' ' -f 1) ]; then
+			rm -rf $2
 			download $1 $2
 		fi
 	else
