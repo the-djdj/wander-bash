@@ -147,8 +147,7 @@ fi
 
 echo -e $status $COLOUR_RESET
 
-
 # Switch into the wander user
 echo -n " * Switching to unprivileged user          "
 PWD=$(pwd)
-su - wander -c "cd $PWD && basic/begin"
+su wander -c 'env -i HOME=$HOME TERM=$TERM /bin/bash -c "cd $PWD && build/begin"'
