@@ -56,6 +56,7 @@ if [ ! -f $CONFIG_FILE ]; then
 	echo "# This next batch of settings control which packages will and won't be built."	>> $CONFIG_FILE
 	echo "# You usually don't have to worry about these."									>> $CONFIG_FILE
 	echo "build_temp_binutils_1=yes"														>> $CONFIG_FILE
+	echo "build_temp_gcc_1=yes"																>> $CONFIG_FILE
 fi
 
 # And load the file
