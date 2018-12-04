@@ -1,0 +1,98 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for building a temporary system on which
+# Wander can be built.
+#
+# The packages to be compiled are:
+#  * Binutils-2.31.1 - Pass 1
+#  * GCC-8.2.0 - Pass 1
+#  * Linux-4.18.5 API Headers
+#  * Glibc-2.28
+#  * Libstdc++ from GCC-8.2.0
+#  * Binutils-2.31.1 - Pass 2
+#  * GCC-8.2.0 - Pass 2
+#  * Tcl-8.6.8
+#  * Expect-5.45.4
+#  * DejaGNU-1.6.1
+#  * M4-1.4.18
+#  * Ncurses-6.1
+#  * Bash-4.4.18
+#  * Bison-3.0.5
+#  * Bzip2-1.0.6
+#  * Coreutils-8.30
+#  * Diffutils-3.6
+#  * File-5.34
+#  * Findutils-4.6.0
+#  * Gawk-4.2.1
+#  * Gettext-0.19.8.1
+#  * Grep-3.1
+#  * Gzip-1.9
+#  * Make-4.2.1
+#  * Patch-2.7.6
+#  * Perl-5.28.0
+#  * Sed-4.5
+#  * Tar-1.30
+#  * Texinfo-6.5
+#  * Util-linux-2.32.1
+#  * Xz-5.2.4 
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Show a nice welcome message
+echo -e "$(COLOUR_COMBINE $COLOUR_SET_BOLD $COLOUR_FOREGROUND_GREY_LIGHT)Constructing temporary system:$COLOUR_RESET"
+
+# Prepare the testing
+result=0
+
+# Change to the appropriate directory
+directory=$PWD
+cd $WANDER/sources
+
+getfile() {
+	mkdir $directory/logs/temp/$2 &> /dev/null
+	if [ -f "$SOURCEDIR/$2" ]; then
+		if [ $3 != $(md5sum "$SOURCEDIR/$2" | cut -d ' ' -f 1) ]; then
+			download $1 $2
+		fi
+	else
+		download $1 $2
+	fi
+}
+
+download () {
+	wget --directory-prefix=$SOURCEDIR "$1/$2" &> $directory/logs/temp/$2/wget.log
+}
+
+cleanup() {
+	rm -rf "$(echo $1 | rev | cut -d '.' -f 3- | rev)/" &> $directory/logs/temp/$1/cleanup.log
+}
+
+decompress() {
+	cleanup $1
+	tar -xf $SOURCEDIR/$1 -C $WANDER/sources &> $directory/logs/temp/$1/tar.log
+}
+
+change_directory () {
+	cd "$(echo $1 | rev | cut -d '.' -f 3- | rev)"
+}
+
+# And do the building
+if [ $result -eq 0 ]; then source $directory/build/temp/binutils_1; fi
+
+# Output results
+if [ $result -eq 0 ]; then
+	status="${COLOUR_FOREGROUND_GREEN}ok"
+else
+	status="${COLOUR_FOREGROUND_RED}failed"
+fi
+
+echo -n -e "Construction $status${COLOUR_RESET}."
+
+# Go back to where we were a moment ago
+cd $directory
+
+# And cleanup
+return $result
