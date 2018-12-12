@@ -42,7 +42,11 @@ fi
 
 # Start with the filesystem preparations
 source build/init/filesystem
-echo ""
+if [ $result -ne 0 ]; then
+	echo "Unable to continue. Exiting."
+	source install/takedown
+	exit
+fi
 
 # Do some final preparations
 source build/init/preparations

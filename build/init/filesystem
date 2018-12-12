@@ -10,6 +10,7 @@
 
 # Show a nice welcome message
 echo -e "$(COLOUR_COMBINE $COLOUR_SET_BOLD $COLOUR_FOREGROUND_GREY_LIGHT)Setting up filesystems:$COLOUR_RESET"
+result=0
 
 
 # Create the partition for Wander
@@ -20,6 +21,8 @@ if [ $format_partition = "yes" ]; then
 	result=$(mkfs -v -t ext4 $os_partition &> logs/init/mkfs.log)
 	if [ $? -eq 0 ]; then
 		status="${COLOUR_FOREGROUND_GREEN}ok"
+	else
+		result=1
 	fi
 else
 	status="${COLOUR_FOREGROUND_BLUE}skipped"
@@ -36,6 +39,8 @@ if [ ! -d $wander ]; then
 	result=$(mkdir -pv $wander &> logs/init/mkdir.log)
 	if [ $? -eq 0 ]; then
 		status="${COLOUR_FOREGROUND_GREEN}ok"
+	else
+		result=1
 	fi
 else
 	status="${COLOUR_FOREGROUND_BLUE}skipped"
@@ -54,6 +59,8 @@ if [ $? -ne 0 ]; then
 	result=$(mount -v -t ext4 $os_partition $wander &> logs/init/mount.log)
 	if [ $? -eq 0 ]; then
 		status="${COLOUR_FOREGROUND_GREEN}ok"
+	else
+		result=1
 	fi
 else
 	status="${COLOUR_FOREGROUND_BLUE}skipped"
@@ -72,6 +79,8 @@ if [ ! -z $swap_partition ]; then
 		result=$(mkswap $swap_partition &> logs/init/mkswap.log)
 		if [ $? -eq 0 ]; then
 			status="${COLOUR_FOREGROUND_GREEN}ok"
+		else
+			result=1
 		fi
 	else
 		status="${COLOUR_FOREGROUND_BLUE}skipped"
@@ -93,6 +102,8 @@ if [ ! -z $swap_partition ]; then
 		result=$(/sbin/swapon -v $swap_partition &> logs/init/swapon.log)
 		if [ $? -eq 0 ]; then
 			status="${COLOUR_FOREGROUND_GREEN}ok"
+		else
+			result=1
 		fi
 	else
 		status="${COLOUR_FOREGROUND_BLUE}skipped"
@@ -102,3 +113,6 @@ else
 fi
 
 echo -e $status $COLOUR_RESET
+echo -n
+
+return $result
