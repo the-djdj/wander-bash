@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for mounting the root directory on which to
+# build wander
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Mount root directory
+status="${COLOUR_FOREGROUND_RED}failed"
+result=0
+
+echo -n " * Mounting root partition                 "
+
+cmd=$(grep -qs $os_partition /proc/mounts)
+if [ $? -ne 0 ]; then
+	rm -rf $wander &> /dev/null
+	cmd=$(mount -v -t ext4 $os_partition $wander &> logs/init/mount.log)
+	if [ $? -eq 0 ]; then
+		status="${COLOUR_FOREGROUND_GREEN}ok"
+	else
+		result=1
+	fi
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+fi
+
+echo -e $status $COLOUR_RESET
+return $result

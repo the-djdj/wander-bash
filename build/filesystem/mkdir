@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for creating the root directory on which to
+# build wander
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Create root directory
+status="${COLOUR_FOREGROUND_RED}failed"
+result=0
+
+echo -n " * Creating root directory                 "
+
+if [ ! -d $wander ]; then
+	cmd=$(mkdir -pv $wander &> logs/init/mkdir.log)
+	if [ $? -eq 0 ]; then
+		status="${COLOUR_FOREGROUND_GREEN}ok"
+	else
+		result=1
+	fi
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+fi
+
+echo -e $status $COLOUR_RESET
+return $result

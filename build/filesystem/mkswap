@@ -1,0 +1,34 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for creating the swap partition to assist in
+# building wander
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Create swap partition
+status="${COLOUR_FOREGROUND_RED}failed"
+result=0
+
+echo -n " * Setting up the swap partition           "
+
+if [ ! -z $swap_partition ]; then
+	cmd=$(grep -eq $swap_partition /proc/swaps)
+	if [ $? -ne 0 ]; then
+		cmd=$(mkswap $swap_partition &> logs/init/mkswap.log)
+		if [ $? -eq 0 ]; then
+			status="${COLOUR_FOREGROUND_GREEN}ok"
+		else
+			result=1
+		fi
+	else
+		status="${COLOUR_FOREGROUND_BLUE}skipped"
+	fi
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+fi
+
+echo -e $status $COLOUR_RESET
+return $result

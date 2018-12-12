@@ -8,47 +8,17 @@
 # @since  8.3-systemd
 #
 
-# Set up the installer
-source install/setup
-
 # Clear the screen
 clear
 
-# Display a welcome message
+# Set up the installer
+source install/setup
 source install/welcome
-
-# Firstly, check that we are running as a superuser
 source install/sudo
 
-# Check that our host system meets the requirements
-source build/prerequisites
-if [ $success -ne 0 ]; then
-	# What do we do if the system does not meet the minimum requirements?
-	read -p  " Do you want to continue the build anyway? (y/n) " reply
-	case $reply in
-		[Yy])	echo "" ;;
-		[Nn])	echo "Exiting. See you soon!"
-				source install/takedown
-				exit ;;
-		   *)	echo "Unrecognised input. Exiting."
-				source install/takedown
-				exit ;;
-	esac
-else
-	# Do some nice spacing
-	echo ""
-	echo ""
-fi
-
-# Start with the filesystem preparations
+# Do some initialisation
+source build/init/prerequisites
 source build/init/filesystem
-if [ $result -ne 0 ]; then
-	echo "Unable to continue. Exiting."
-	source install/takedown
-	exit
-fi
-
-# Do some final preparations
 source build/init/preparations
 
 # Take down the installer

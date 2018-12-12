@@ -10,109 +10,27 @@
 
 # Show a nice welcome message
 echo -e "$(COLOUR_COMBINE $COLOUR_SET_BOLD $COLOUR_FOREGROUND_GREY_LIGHT)Setting up filesystems:$COLOUR_RESET"
-result=0
 
 
-# Create the partition for Wander
-echo -n " * Setting up the root file system         "
-status="${COLOUR_FOREGROUND_RED}failed"
+# Get ready to create the filesystem
+success=0
 
-if [ $format_partition = "yes" ]; then
-	result=$(mkfs -v -t ext4 $os_partition &> logs/init/mkfs.log)
-	if [ $? -eq 0 ]; then
-		status="${COLOUR_FOREGROUND_GREEN}ok"
-	else
-		result=1
-	fi
-else
-	status="${COLOUR_FOREGROUND_BLUE}skipped"
+
+# And do the things
+source build/filesystem/mkfs   ; success=$(($success | $result))
+source build/filesystem/mkdir  ; success=$(($success | $result))
+source build/filesystem/mount  ; success=$(($success | $result))
+source build/filesystem/mkswap ; success=$(($success | $result))
+source build/filesystem/swapon ; success=$(($success | $result))
+
+
+# Check for sanity
+if [ $success -ne 0 ]; then
+	echo -e "Filesystems creation ${COLOUR_FOREGROUND_RED}failed${COLOUR_RESET}. Exiting."
+	source install/takedown
+	exit
 fi
 
-echo -e $status $COLOUR_RESET
 
-
-# Create the Wander directory structure
-echo -n " * Creating root directory                 "
-status="${COLOUR_FOREGROUND_RED}failed"
-
-if [ ! -d $wander ]; then
-	result=$(mkdir -pv $wander &> logs/init/mkdir.log)
-	if [ $? -eq 0 ]; then
-		status="${COLOUR_FOREGROUND_GREEN}ok"
-	else
-		result=1
-	fi
-else
-	status="${COLOUR_FOREGROUND_BLUE}skipped"
-fi
-
-echo -e $status $COLOUR_RESET
-
-
-# Mount the Wander partition
-echo -n " * Mounting root partition                 "
-status="${COLOUR_FOREGROUND_RED}failed"
-
-result=$(grep -qs $os_partition /proc/mounts)
-if [ $? -ne 0 ]; then
-	rm -rf $wander &> /dev/null
-	result=$(mount -v -t ext4 $os_partition $wander &> logs/init/mount.log)
-	if [ $? -eq 0 ]; then
-		status="${COLOUR_FOREGROUND_GREEN}ok"
-	else
-		result=1
-	fi
-else
-	status="${COLOUR_FOREGROUND_BLUE}skipped"
-fi
-
-echo -e $status $COLOUR_RESET
-
-
-# Set up the swap partition
-echo -n " * Setting up the swap partition           "
-status="${COLOUR_FOREGROUND_RED}failed"
-
-if [ ! -z $swap_partition ]; then
-	result=$(grep -eq $swap_partition /proc/swaps)
-	if [ $? -ne 0 ]; then
-		result=$(mkswap $swap_partition &> logs/init/mkswap.log)
-		if [ $? -eq 0 ]; then
-			status="${COLOUR_FOREGROUND_GREEN}ok"
-		else
-			result=1
-		fi
-	else
-		status="${COLOUR_FOREGROUND_BLUE}skipped"
-	fi
-else
-	status="${COLOUR_FOREGROUND_BLUE}skipped"
-fi
-
-echo -e $status $COLOUR_RESET
-
-
-# Activate the swap partition
-echo -n " * Activating swap parition                "
-status="${COLOUR_FOREGROUND_RED}failed"
-
-if [ ! -z $swap_partition ]; then
-	result=$(grep -qs $swap_partition /proc/swaps)
-	if [ $? -ne 0 ]; then
-		result=$(/sbin/swapon -v $swap_partition &> logs/init/swapon.log)
-		if [ $? -eq 0 ]; then
-			status="${COLOUR_FOREGROUND_GREEN}ok"
-		else
-			result=1
-		fi
-	else
-		status="${COLOUR_FOREGROUND_BLUE}skipped"
-	fi
-else
-	status="${COLOUR_FOREGROUND_BLUE}skipped"
-fi
-
-echo -e $status $COLOUR_RESET
-echo -n
-
-return $result
+# Lastly, return the result
+return $success

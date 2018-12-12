@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for activating the swap partition
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Activate swap partition
+status="${COLOUR_FOREGROUND_RED}failed"
+result=0
+
+echo -n " * Activating swap parition                "
+
+if [ ! -z $swap_partition ]; then
+	cmd=$(grep -qs $swap_partition /proc/swaps)
+	if [ $? -ne 0 ]; then
+		cmd=$(/sbin/swapon -v $swap_partition &> logs/init/swapon.log)
+		if [ $? -eq 0 ]; then
+			status="${COLOUR_FOREGROUND_GREEN}ok"
+		else
+			result=1
+		fi
+	else
+		status="${COLOUR_FOREGROUND_BLUE}skipped"
+	fi
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+fi
+
+echo -e $status $COLOUR_RESET
+return $result
