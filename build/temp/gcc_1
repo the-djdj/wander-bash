@@ -1,0 +1,197 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for building the first pass of GCC in the
+# temporary system
+#
+# The package being built is:
+#  *  GCC-8.2.0 - Pass 1
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Probe Bash version
+status="${COLOUR_FOREGROUND_RED} GCC-8.2.0 failed."
+result=0
+
+
+
+filename="gcc-8.2.0.tar.xz"
+location="http://ftp.gnu.org/gnu/gcc/gcc-8.2.0/"
+checksum="4ab282f414676496483b3e1793d07862"
+
+filename_mpfr="mpfr-4.0.1.tar.xz"
+location_mpfr="http://www.mpfr.org/mpfr-4.0.1/"
+checksum_mpfr="b8dd19bd9bb1ec8831a6a582a7308073"
+
+filename_gmp="gmp-6.1.2.tar.xz"
+location_gmp="http://ftp.gnu.org/gnu/gmp/"
+checksum_gmp="f58fa8001d60c4c77595fbbb62b63c1d"
+
+filename_mpc="mpc-1.1.0.tar.gz"
+location_mpc="https://ftp.gnu.org/gnu/mpc/"
+checksum_mpc="4125404e41e482ec68282a2e687f6c73"
+
+
+
+# The instructions before the package is configured
+preconfigure () {
+	# Unpack some GCC dependencies
+	tar -xf ../mpfr-4.0.1.tar.xz
+	mv -v mpfr-4.0.1 mpfr
+	tar -xf ../gmp-6.1.2.tar.xz
+	mv -v gmp-6.1.2 gmp
+	tar -xf ../mpc-1.1.0.tar.gz
+	mv -v mpc-1.1.0 mpc
+
+	# Change the location of GCC's default dynamic linker to use the one nstalled
+	# in /tools. Also remove /usr/include from GCC's include search path.
+	for file in gcc/config/{linux,i386/linux{,64}}.h
+	do
+		cp -uv $file{,.orig}
+		sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
+			-e 's@/usr@/tools@g' $file.orig > $file
+  		echo '
+#undef STANDARD_STARTFILE_PREFIX_1
+#undef STANDARD_STARTFILE_PREFIX_2
+#define STANDARD_STARTFILE_PREFIX_1 "/tools/lib/"
+#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file
+  		touch $file.orig
+	done
+
+	# On x86_64 hosts, set the default directory name for 64-bit libraries to “lib”
+	case $(uname -m) in
+		x86_64)
+			sed -e '/m64=/s/lib64/lib/' \
+				-i.orig gcc/config/i386/t-linux64
+		;;
+	esac
+
+	# Use a specific build change_directory
+	mkdir -v build
+	cd       build
+}
+
+
+
+# The instructions for configuring the package
+configure () {
+	../configure                                       \
+    	--target=$WANDER_TGT                           \
+    	--prefix=/tools                                \
+    	--with-glibc-version=2.11                      \
+    	--with-sysroot=$WANDER                         \
+    	--with-newlib                                  \
+    	--without-headers                              \
+    	--with-local-prefix=/tools                     \
+    	--with-native-system-header-dir=/tools/include \
+    	--disable-nls                                  \
+    	--disable-shared                               \
+    	--disable-multilib                             \
+    	--disable-decimal-float                        \
+    	--disable-threads                              \
+    	--disable-libatomic                            \
+    	--disable-libgomp                              \
+    	--disable-libmpx                               \
+    	--disable-libquadmath                          \
+    	--disable-libssp                               \
+    	--disable-libvtv                               \
+    	--disable-libstdcxx                            \
+    	--enable-languages=c,c++
+}
+
+
+
+# The instructions for compiling the package
+compile() {
+	make
+}
+
+
+
+# The instructions after the package is configured
+postconfigure() {
+	:
+}
+
+
+
+# The instructions to install the package
+install () {
+	make install
+}
+
+
+
+print_heading () {
+	echo -n " * GCC      (Pass 1)                       "
+}
+
+print_heading
+
+# Do the package things
+if [ $build_temp_gcc_1 = "yes" ] ; then
+
+	# Download the file
+	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}downloading"
+	getfile $location $filename $checksum
+	getfile $location_mpfr $filename_mpfr $checksum_mpfr
+	getfile $location_gmp $filename_gmp $checksum_gmp
+	getfile $location_mpc $filename_mpc $checksum_mpc
+	echo -e -n $LINE_UP ; print_heading
+
+	# Unpack the archive
+	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}unpacking"
+	decompress $filename
+	change_directory $filename
+	echo -e -n $LINE_UP ; print_heading
+
+	# Set timer
+	SECONDS=0
+
+	# Preconfigure
+	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}preconfiguring"
+    preconfigure &> $directory/logs/temp/$filename/preconfigure.log
+	echo -e -n $LINE_UP ; print_heading
+
+	# Configure
+	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}configuring"
+	configure &> $directory/logs/temp/$filename/configure.log
+	echo -e -n $LINE_UP ; print_heading
+
+	# Compile
+	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}compiling"
+	compile &> $directory/logs/temp/$filename/compile.log
+	echo -e -n $LINE_UP ; print_heading
+
+	# Postconfigure
+	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}postconfiguring"
+	postconfigure &> $directory/logs/temp/$filename/postconfigure.log
+	echo -e -n $LINE_UP ; print_heading
+
+	# Install
+    echo -e -n "${COLOUR_FOREGROUND_MAGENTA}installing"
+	install &> $directory/logs/temp/$filename/install.log
+    echo -e -n $LINE_UP ; print_heading
+
+	# Go back to the sources directory
+	cd $WANDER/sources
+
+	# Cleanup
+	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}cleaning up"
+	cleanup $filename
+	echo -e -n $LINE_UP ; print_heading
+
+	duration=$SECONDS
+	status="${COLOUR_FOREGROUND_GREEN}ok              ${COLOUR_RESET}($((duration / 3600))h $(((duration / 60) - (duration / 3600 * 60)))m $(($duration % 60))s)"
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+fi
+
+unset filename
+unset location
+unset checksum
+
+echo -e $status $COLOUR_RESET
+return $result

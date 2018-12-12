@@ -82,6 +82,7 @@ change_directory () {
 
 # And do the building
 if [ $result -eq 0 ]; then source $directory/build/temp/binutils_1; fi
+if [ $result -eq 0 ]; then source $directory/build/temp/gcc_1;		fi
 
 # Output results
 if [ $result -eq 0 ]; then
