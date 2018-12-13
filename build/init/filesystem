@@ -32,5 +32,9 @@ if [ $success -ne 0 ]; then
 fi
 
 
+# Print a missing extra line
+echo ""
+
+
 # Lastly, return the result
 return $success
