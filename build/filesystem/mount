@@ -14,10 +14,14 @@ result=0
 
 echo -n " * Mounting root partition                 "
 
+# Check that the partition isn't mounted
 cmd=$(grep -qs $os_partition /proc/mounts)
 if [ $? -ne 0 ]; then
-	rm -rf $wander &> /dev/null
-	cmd=$(mount -v -t ext4 $os_partition $wander &> logs/init/mount.log)
+
+	# Mount the partition
+	mount -v -t ext4 $os_partition $wander &> logs/init/mount.log
+
+	# Check the result
 	if [ $? -eq 0 ]; then
 		status="${COLOUR_FOREGROUND_GREEN}ok"
 	else
