@@ -14,8 +14,13 @@ result=0
 
 echo -n " * Setting up the root file system         "
 
+# Check that the format partition variable is defined
 if [ $format_partition = "yes" ]; then
-	cmd=$(mkfs -v -t ext4 $os_partition &> logs/init/mkfs.log)
+
+	# Format the partition
+	mkfs -v -t ext4 $os_partition &> logs/init/mkfs.log
+
+	# Check the result
 	if [ $? -eq 0 ]; then
 		status="${COLOUR_FOREGROUND_GREEN}ok"
 	else

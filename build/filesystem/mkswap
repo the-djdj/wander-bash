@@ -14,10 +14,19 @@ result=0
 
 echo -n " * Setting up the swap partition           "
 
+# Check that the swap partition variable is defined
 if [ ! -z $swap_partition ]; then
-	cmd=$(grep -eq $swap_partition /proc/swaps)
+
+	# Now check if it is mounted
+	grep -eq $swap_partition /proc/swaps
+
+	# Check the result
 	if [ $? -ne 0 ]; then
-		cmd=$(mkswap $swap_partition &> logs/init/mkswap.log)
+
+		# Activate the swap partition
+		mkswap $swap_partition &> logs/init/mkswap.log
+
+		# Check the result
 		if [ $? -eq 0 ]; then
 			status="${COLOUR_FOREGROUND_GREEN}ok"
 		else
