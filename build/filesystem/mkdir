@@ -15,7 +15,11 @@ result=0
 echo -n " * Creating root directory                 "
 
 if [ ! -d $wander ]; then
-	cmd=$(mkdir -pv $wander &> logs/init/mkdir.log)
+
+	# Create the directory
+	mkdir -pv $wander &> logs/init/mkdir.log
+
+	# Check the result
 	if [ $? -eq 0 ]; then
 		status="${COLOUR_FOREGROUND_GREEN}ok"
 	else
