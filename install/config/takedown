@@ -16,5 +16,7 @@ unset swap_partition
 unset os_partition
 unset format_partition
 unset wander
+
 unset build_temp_binutils_1
 unset build_temp_gcc_1
+unset build_temp_linux_headers
