@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for claiming ownership of the tools directory
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Claim ownership
+status="${COLOUR_FOREGROUND_RED}failed"
+result=0
+
+echo -n " * Claiming ownership of tools directory   "
+
+# Claim tools directory ownership
+chown -v wander "${wander}/tools" &> logs/init/chown_tools.log
+if [ $? -eq 0 ]; then
+	status="${COLOUR_FOREGROUND_GREEN}ok"
+else
+	result=1
+fi
+
+echo -e $status $COLOUR_RESET
+return $result

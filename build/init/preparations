@@ -11,141 +11,29 @@
 echo -e "$(COLOUR_COMBINE $COLOUR_SET_BOLD $COLOUR_FOREGROUND_GREY_LIGHT)Final preparations:$COLOUR_RESET"
 
 
-# Create the sources directory for Wander
-echo -n " * Creating sources directory              "
-status="${COLOUR_FOREGROUND_RED}failed"
-	
-SOURCEDIR="sources"
-if [ $local_sources = "no" ]; then
-	SOURCEDIR="${wander}/sources"
+# Get ready for the final preparations
+success=0
+
+
+# And do the things
+source build/preparations/sources       ; success=$(($success | $result))
+source build/preparations/sources_perms ; success=$(($success | $result))
+source build/preparations/tools         ; success=$(($success | $result))
+source build/preparations/tools_symlink ; success=$(($success | $result))
+source build/preparations/build_group   ; success=$(($success | $result))
+source build/preparations/useradd       ; success=$(($success | $result))
+source build/preparations/passwd        ; success=$(($success | $result))
+source build/preparations/tools_claim   ; success=$(($success | $result))
+source build/preparations/sources_claim ; success=$(($success | $result))
+
+
+# Check for sanity
+if [ $success -ne 0 ]; then
+	echo -e "Final preparations ${COLOUR_FOREGROUND_RED}failed${COLOUR_RESET}. Exiting."
+	source install/takedown
+	exit
 fi
 
-# Create this directory
-if [ ! -d $SOURCEDIR ]; then
-	result=$(mkdir -v $SOURCEDIR &> logs/init/mkdir.log)
-	if [ $? -eq 0 ]; then
-		status="${COLOUR_FOREGROUND_GREEN}ok"
-	fi
-else
-	status="${COLOUR_FOREGROUND_BLUE}skipped"
-fi
-
-echo -e $status $COLOUR_RESET
-
-
-# Set directory permissions
-echo -n " * Setting sources directory permissions   "
-status="${COLOUR_FOREGROUND_RED}failed"
-
-result=$(chmod -v a+wt $SOURCEDIR &> logs/init/chmod.log)
-if [ $? -eq 0 ]; then
-	status="${COLOUR_FOREGROUND_GREEN}ok"
-fi
-
-echo -e $status $COLOUR_RESET
-
-
-# Create the tools directory for Wander
-echo -n " * Creating tools directory                "
-status="${COLOUR_FOREGROUND_RED}failed"
-
-# Create the sources directory variable
-if [ ! -d "${wander}/tools" ]; then
-	result=$(mkdir -v "${wander}/tools" &> logs/init/mkdir.log)
-	if [ $? -eq 0 ]; then
-		status="${COLOUR_FOREGROUND_GREEN}ok"
-	fi  
-else
-	status="${COLOUR_FOREGROUND_BLUE}skipped"
-fi  
-
-echo -e $status $COLOUR_RESET
-
-
-# Set directory symlinks
-echo -n " * Setting tools directory symlinks        "
-status="${COLOUR_FOREGROUND_RED}failed"
-
-result=$(ln -sv "${wander}/tools" "/" &> logs/init/ln.log)
-if { [ ! -L "${wander}/tools" ]; } && { [ ! -d "${wander}/tools" ]; }; then
-	if [ $? -eq 0 ]; then
-		status="${COLOUR_FOREGROUND_GREEN}ok"
-	fi
-else
-	status="${COLOUR_FOREGROUND_BLUE}skipped"
-fi
-
-echo -e $status $COLOUR_RESET
-
-
-# Create the build group
-echo -n " * Creating build group                    "
-status="${COLOUR_FOREGROUND_RED}failed"
-
-result=$(getent group wander)
-if [ $? -ne 0 ]; then
-	result=$(groupadd wander &> logs/init/groupadd.log)
-	if [ $? -eq 0 ]; then
-		status="${COLOUR_FOREGROUND_GREEN}ok"
-	fi
-else
-	status="${COLOUR_FOREGROUND_BLUE}skipped"
-fi
-
-echo -e $status $COLOUR_RESET
-
-
-# Create the unprivileged user
-echo -n " * Creating unprivileged user              "
-status="${COLOUR_FOREGROUND_RED}failed"
-
-result=$(getent passwd wander)
-if [ $? -ne 0 ]; then
-	result=$(useradd -s /bin/bash -g wander -m -k /dev/null wander &> logs/init/useradd.log)
-	if [ $? -eq 0 ]; then
-		status="${COLOUR_FOREGROUND_GREEN}ok"
-	fi
-else
-	status="${COLOUR_FOREGROUND_BLUE}skipped"
-fi
-
-echo -e $status $COLOUR_RESET
-
-
-# Setting the unprivileged user password
-echo -n " * Setting unprivileged user password      "
-status="${COLOUR_FOREGROUND_RED}failed"
-
-result=$(echo -e "wander\nwander" | passwd wander &> logs/init/passwd.log)
-if [ $? -eq 0 ]; then
-	status="${COLOUR_FOREGROUND_GREEN}ok"
-fi
-
-echo -e $status $COLOUR_RESET
-
-
-# Claim tools directory ownership
-echo -n " * Claiming ownership of tools directory   "
-status="${COLOUR_FOREGROUND_RED}failed"
-
-result=$(chown -v wander "${wander}/tools" &> logs/init/chown.log)
-if [ $? -eq 0 ]; then
-	status="${COLOUR_FOREGROUND_GREEN}ok"
-fi
-
-echo -e $status $COLOUR_RESET
-
-
-# Claim sources directory ownership
-echo -n " * Claiming ownership of sources directory "
-status="${COLOUR_FOREGROUND_RED}failed"
-
-result=$(chown -v wander "${SOURCEDIR}" &> logs/init/chown.log)
-if [ $? -eq 0 ]; then
-    status="${COLOUR_FOREGROUND_GREEN}ok"
-fi
-
-echo -e $status $COLOUR_RESET
 
 # Switch into the wander user
 echo -n " * Switching to unprivileged user          "

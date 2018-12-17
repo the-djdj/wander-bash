@@ -11,11 +11,7 @@
 source install/setup
 
 # Create some new variables
-if [ $local_sources = "no" ]; then
-    SOURCEDIR="${wander}/sources"
-else
-	SOURCEDIR="$PWD/sources"
-fi
+export SOURCEDIR="${wander}/sources"
 
 # Create a profile file
 cat > ~/.bash_profile << EOF

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for claiming ownership of the sources directory
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Claim ownership
+status="${COLOUR_FOREGROUND_RED}failed"
+result=0
+
+echo -n " * Claiming ownership of sources directory "
+
+# Claim sources directory ownership
+chown -v wander "${wander}/sources" &> logs/init/chown_source.log
+if [ $? -eq 0 ]; then
+    status="${COLOUR_FOREGROUND_GREEN}ok"
+else
+	result=1
+fi
+
+echo -e $status $COLOUR_RESET
+return $result

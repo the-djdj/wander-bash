@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for creating the symlinks to the tools
+# directory
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Create the symlinks
+status="${COLOUR_FOREGROUND_RED}failed"
+result=0
+
+echo -n " * Setting tools directory symlinks        "
+
+# Create the symlinks
+ln -sv "${wander}/tools" "/" &> logs/init/ln_tools.log
+if { [ ! -L "${wander}/tools" ]; } && { [ ! -d "${wander}/tools" ]; }; then
+	if [ $? -eq 0 ]; then
+		status="${COLOUR_FOREGROUND_GREEN}ok"
+	else
+		result=1
+	fi
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+fi
+
+echo -e $status $COLOUR_RESET
+return $result

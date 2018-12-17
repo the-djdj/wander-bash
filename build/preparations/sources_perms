@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for setting the appropriate permissions on the
+# sources directory
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Set permissions for sources directory
+status="${COLOUR_FOREGROUND_RED}failed"
+result=0
+
+echo -n " * Setting sources directory permissions   "
+
+# Set the permissions
+chmod -v a+wt "${wander}/sources" &> logs/init/chmod_source.log
+if [ $? -eq 0 ]; then
+	status="${COLOUR_FOREGROUND_GREEN}ok"
+else
+	result=1
+fi
+
+echo -e $status $COLOUR_RESET
+return $result

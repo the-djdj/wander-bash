@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for creating the tools directory on the
+# wander partition
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Create tools directory
+status="${COLOUR_FOREGROUND_RED}failed"
+result=0
+
+echo -n " * Creating tools directory                "
+
+# Create the tools directory
+if [ ! -d "${wander}/tools" ]; then
+	mkdir -v "${wander}/tools" &> logs/init/mkdir_tools.log
+	if [ $? -eq 0 ]; then
+		status="${COLOUR_FOREGROUND_GREEN}ok"
+	else
+		result=1
+	fi
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+fi
+
+
+echo -e $status $COLOUR_RESET
+return $result
