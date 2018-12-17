@@ -11,7 +11,7 @@
 # @since  8.3-systemd
 #
 
-# Probe Bash version
+# Set results
 status="${COLOUR_FOREGROUND_RED}Binutils-2.31.1 failed."
 result=0
 
@@ -115,7 +115,7 @@ if [ $build_temp_binutils_1 = "yes" ] ; then
     echo -e -n $LINE_UP ; print_heading
 
 	# Go back to the sources directory
-	cd $WANDER/sources	
+	cd $WANDER/sources
 
 	# Cleanup
 	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}cleaning up"

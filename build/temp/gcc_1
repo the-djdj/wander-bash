@@ -11,7 +11,7 @@
 # @since  8.3-systemd
 #
 
-# Probe Bash version
+# Set results
 status="${COLOUR_FOREGROUND_RED} GCC-8.2.0 failed."
 result=0
 
