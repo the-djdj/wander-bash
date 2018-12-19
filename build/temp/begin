@@ -35,7 +35,7 @@
 #  * Tar-1.30
 #  * Texinfo-6.5
 #  * Util-linux-2.32.1
-#  * Xz-5.2.4 
+#  * Xz-5.2.4
 #
 # @author the_DJDJ
 # @since  8.3-systemd
@@ -81,8 +81,9 @@ change_directory () {
 }
 
 # And do the building
-if [ $result -eq 0 ]; then source $directory/build/temp/binutils_1; fi
-if [ $result -eq 0 ]; then source $directory/build/temp/gcc_1;		fi
+if [ $result -eq 0 ]; then source $directory/build/temp/binutils_1;    fi
+if [ $result -eq 0 ]; then source $directory/build/temp/gcc_1;		   fi
+if [ $result -eq 0 ]; then source $directory/build/temp/linux_headers; fi
 
 # Output results
 if [ $result -eq 0 ]; then
