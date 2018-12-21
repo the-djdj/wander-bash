@@ -9,6 +9,7 @@
 
 # Get our variables back
 source install/setup
+source install/config/setup
 
 # Create some new variables
 export SOURCEDIR="${wander}/sources"
