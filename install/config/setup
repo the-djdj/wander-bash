@@ -53,6 +53,17 @@ if [ ! -f $CONFIG_FILE ]; then
 	echo "build_temp_binutils_1=yes"														>> $CONFIG_FILE
 	echo "build_temp_gcc_1=yes"																>> $CONFIG_FILE
 	echo "build_temp_linux_headers=yes" 													>> $CONFIG_FILE
+
+	# And notify the user that we've created a config file, and that they must
+	# look at it.
+	echo -e "No config file was detected. Wander has created one for you, but it is ${COLOUR_BOLD}highly${COLOUR_RESET}"
+	echo -e "recommended that you customise it for your own setup. Modify it in a text editor"
+	echo -e "of your choice, and then switch back to this window to continue the build."
+	echo ""
+
+	read -n 1 -s -r -p "Press any key to continue. "
+	echo ""
+	echo ""
 fi
 
 # And load the file

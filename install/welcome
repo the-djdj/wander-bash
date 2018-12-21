@@ -2,7 +2,7 @@
 
 #
 # This file contains the scripts for creating a nice, user-friendly welcome
-# message. 
+# message.
 #
 # @author the_DJDJ
 # @since  8.3-systemd
@@ -13,3 +13,6 @@ echo -e "${COLOUR_SET_BOLD}Welcome to the Wander build system!"
 echo -e ""
 echo -e "${COLOUR_RESET}This script will allow for Wander ($WANDER_VERSION) to be built."
 echo -e ""
+
+# Load the config
+source install/config/setup

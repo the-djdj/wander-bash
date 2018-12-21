@@ -13,9 +13,6 @@ source install/var/setup
 # Set up the colours
 source install/colour/setup
 
-# Load the config
-source install/config/setup
-
 # Create the log directories
 rm -rf logs					&> /dev/null
 mkdir logs					&> /dev/null
