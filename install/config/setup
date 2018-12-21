@@ -47,6 +47,14 @@ if [ ! -f $CONFIG_FILE ]; then
 	echo "# Example: wander=/mnt/wander"													>> $CONFIG_FILE
 	echo "wander=/mnt/wander-os"															>> $CONFIG_FILE
 	echo ""																					>> $CONFIG_FILE
+	echo "# If you want to (or have limited bandwidth), you can opt to store sources in a"	>> $CONFIG_FILE
+	echo "# separate directory. By using this method, sources are initially copied into"	>> $CONFIG_FILE
+	echo "# the environment, and all additional ones are copied back afterwards. If you"	>> $CONFIG_FILE
+	echo "# don't feel like making use of this option, just leave the variable blank."		>> $CONFIG_FILE
+	echo "#"																				>> $CONFIG_FILE
+	echo "# Example: sources=~/wander/sources"												>> $CONFIG_FILE
+	echo "sources=~/wander/sources"															>> $CONFIG_FILE
+	echo ""																					>> $CONFIG_FILE
 	echo ""																					>> $CONFIG_FILE
 	echo ""																					>> $CONFIG_FILE
 	echo "# This next batch of settings control which packages will and won't be built."	>> $CONFIG_FILE
