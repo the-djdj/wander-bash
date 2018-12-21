@@ -52,8 +52,11 @@ if [ ! -f $CONFIG_FILE ]; then
 	echo "# the environment, and all additional ones are copied back afterwards. If you"	>> $CONFIG_FILE
 	echo "# don't feel like making use of this option, just leave the variable blank."		>> $CONFIG_FILE
 	echo "#"																				>> $CONFIG_FILE
+	echo "# NOTE: as this bit of code is executed by the WANDER user, '~' refers to "		>> $CONFIG_FILE
+	echo "# /home/wander by default."														>> $CONFIG_FILE
+	echo "#"																				>> $CONFIG_FILE
 	echo "# Example: sources=~/wander/sources"												>> $CONFIG_FILE
-	echo "sources=~/wander/sources"															>> $CONFIG_FILE
+	echo "sources=~/sources"																>> $CONFIG_FILE
 	echo ""																					>> $CONFIG_FILE
 	echo ""																					>> $CONFIG_FILE
 	echo ""																					>> $CONFIG_FILE
