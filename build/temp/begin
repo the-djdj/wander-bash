@@ -53,6 +53,19 @@ cd $WANDER/sources
 
 getfile() {
 	mkdir $directory/logs/temp/$2 &> /dev/null
+
+	# Check to see if we can import the source from somewhere
+	if [ ! -z $sources ]; then
+		if [ ! -d $sources ]; then
+			mkdir $sources
+		fi
+
+		if [ -f "$sources/$2" ]; then
+			cp $sources/$2 $SOURCEDIR/
+		fi
+	fi
+
+	# And start the download process
 	if [ -f "$SOURCEDIR/$2" ]; then
 		if [ $3 != $(md5sum "$SOURCEDIR/$2" | cut -d ' ' -f 1) ]; then
 			rm -rf $2
@@ -60,6 +73,11 @@ getfile() {
 		fi
 	else
 		download $1 $2
+	fi
+
+	# Finally, make sure that our file exists in the other source directory
+	if [ ! -z $sources ]; then
+		cp $SOURCEDIR/$2 $sources/
 	fi
 }
 
