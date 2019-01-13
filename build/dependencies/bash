@@ -17,15 +17,27 @@ result=1
 
 echo -n " * Bash                                    "
 
-version=$(bash --version | head -n 1 | cut -d ' ' -f 4 | cut -d '(' -f 1)
-link=$(readlink -f /bin/sh)
+# Check that the command exists
+bash --version &> /dev/null
+if [ $? -ne 127 ]; then
 
-if { [ $(cut -d '.' -f 1 <<< $version) -gt 3 ]; } ||
-   { [ $(cut -d '.' -f 1 <<< $version) -eq 3 ] && [ $(cut -d '.' -f 2 <<< $version) -ge 2 ]; }; then
-	if [ "$link" = "/bin/bash" ]; then
-		status="${COLOUR_FOREGROUND_GREEN}ok"
-		result=0
-	fi
+  # Collect the version information
+  version=$(bash --version | head -n 1 | cut -d ' ' -f 4 | cut -d '(' -f 1)
+  link=$(readlink -f /bin/sh)
+
+  # Check that it meets the minimum requirements
+  if { [ $(cut -d '.' -f 1 <<< $version) -gt 3 ]; } ||
+     { [ $(cut -d '.' -f 1 <<< $version) -eq 3 ] && [ $(cut -d '.' -f 2 <<< $version) -ge 2 ]; }; then
+
+    # Set an output for correct version but incorrect link
+    status="${COLOUR_FOREGROUND_GREEN}Bash-3.2 ${COLOUR_FOREGROUND_RED}(with /bin/sh linking to bash) ${COLOUR_FOREGROUND_GREEN}required."
+
+    # Check that the link is correct
+    if [ "$link" = "/bin/bash" ]; then
+		  status="${COLOUR_FOREGROUND_GREEN}ok"
+		  result=0
+	  fi
+  fi
 fi
 
 echo -e $status $COLOUR_RESET

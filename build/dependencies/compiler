@@ -14,17 +14,23 @@ result=1
 
 echo -n " * Testing G++ compiler                    "
 
-# Create a dummy program to compile
-echo 'int main(){}' > dummy.c && g++ -o dummy dummy.c
+# Check that the command exists
+g++ --version &> /dev/null
+if [ $? -ne 127 ]; then
 
-# Test that the file is executable
-if [ -x dummy ]; then
-	status="${COLOUR_FOREGROUND_GREEN}ok"
-	result=0
+	# Create a dummy program to compile
+	echo 'int main(){}' > dummy.c && g++ -o dummy dummy.c
+
+	# Test that the file is executable
+	if [ -x dummy ]; then
+		status="${COLOUR_FOREGROUND_GREEN}ok"
+		result=0
+	fi
+
+	# And then remove the files
+	rm -f dummy.c dummy
+
 fi
-
-# And then remove the files
-rm -f dummy.c dummy
 
 echo -e $status $COLOUR_RESET
 return $result

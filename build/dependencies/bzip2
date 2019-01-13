@@ -17,13 +17,20 @@ result=1
 
 echo -n " * Bzip2                                   "
 
-version=$(bzip2 --version 2>&1 < /dev/null | head -n 1 | cut -d ' ' -f 8 | cut -d ',' -f 1)
+# Check that the command exists
+bzip2 --version &> /dev/null
+if [ $? -ne 127 ]; then
 
-if { [ $(cut -d '.' -f 1 <<< $version) -gt 1 ]; } ||
-   { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -ge 0 ]; } ||
-   { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 0 ] && [ $(cut -d '.' -f 3 <<< $version) -ge 4 ]; } then
-	status="${COLOUR_FOREGROUND_GREEN}ok"
-	result=0
+  # Collect the version information
+  version=$(bzip2 --version 2>&1 < /dev/null | head -n 1 | cut -d ' ' -f 8 | cut -d ',' -f 1)
+
+  # Check that it meets the minimum requirements  
+  if { [ $(cut -d '.' -f 1 <<< $version) -gt 1 ]; } ||
+     { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -ge 0 ]; } ||
+     { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 0 ] && [ $(cut -d '.' -f 3 <<< $version) -ge 4 ]; }; then
+	  status="${COLOUR_FOREGROUND_GREEN}ok"
+	  result=0
+  fi
 fi
 
 echo -e $status $COLOUR_RESET

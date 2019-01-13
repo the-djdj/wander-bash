@@ -5,7 +5,7 @@
 # minimum gawk prerequisites for building Wander
 #
 # The minimum prerequisites are:
-#  * Gawk-4.0.1 (/usr/bin/awk should be a link to gawk) 
+#  * Gawk-4.0.1 (/usr/bin/awk should be a link to gawk)
 #
 # @author the_DJDJ
 # @since  8.3-systemd
@@ -17,15 +17,27 @@ result=1
 
 echo -n " * Gawk                                    "
 
-version=$(gawk --version | head -n 1 | cut -d ' ' -f 3 | cut -d ',' -f 1)
+# Check that the command exists
+gawk --version &> /dev/null
+if [ $? -ne 127 ]; then
 
-if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
-   { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 0 ]; } ||
-   { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 0 ] && [ $(cut -d '.' -f 3 <<< $version) -ge 1 ]; }; then
-	if [ -h "/usr/bin/awk" ] || [ -x "/usr/bin/awk" ]; then
-	   	status="${COLOUR_FOREGROUND_GREEN}ok"
-		result=0
-	fi
+  # Collect the version information
+  version=$(gawk --version | head -n 1 | cut -d ' ' -f 3 | cut -d ',' -f 1)
+
+  # Check that it meets the minimum requirements
+  if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
+     { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 0 ]; } ||
+     { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 0 ] && [ $(cut -d '.' -f 3 <<< $version) -ge 1 ]; }; then
+
+    # Set an output for correct version but incorrect link
+    status="${COLOUR_FOREGROUND_GREEN}Gawk-4.0.1${COLOUR_FOREGROUND_RED} (with /usr/bin/awk linking to gawk)${COLOUR_FOREGROUND_GREEN} required."
+
+    # Check that the link is correct
+    if [ -h "/usr/bin/awk" ] || [ -x "/usr/bin/awk" ]; then
+  	   	status="${COLOUR_FOREGROUND_GREEN}ok"
+		  result=0
+  	fi
+  fi
 fi
 
 echo -e $status $COLOUR_RESET

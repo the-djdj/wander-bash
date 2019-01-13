@@ -17,13 +17,20 @@ result=1
 
 echo -n " * Sed                                     "
 
-version=$(sed --version | head -n 1 | rev | cut -d ' ' -f 1 | rev)
+# Check that the command exists
+sed --version &> /dev/null
+if [ $? -ne 127 ]; then
 
-if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
-   { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 1 ]; } ||
-   { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 3 <<< $version) -ge 5 ]; }; then
-	status="${COLOUR_FOREGROUND_GREEN}ok"
-	result=0
+  # Collect the version information
+  version=$(sed --version | head -n 1 | rev | cut -d ' ' -f 1 | rev)
+
+  # Check that it meets the minimum requirements
+  if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
+     { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 1 ]; } ||
+     { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 3 <<< $version) -ge 5 ]; }; then
+	  status="${COLOUR_FOREGROUND_GREEN}ok"
+	  result=0
+  fi
 fi
 
 echo -e $status $COLOUR_RESET

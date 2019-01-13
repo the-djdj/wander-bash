@@ -17,18 +17,25 @@ result=1
 
 echo -n " * GCC                                     "
 
-version=$(gcc --version | head -n 1 | rev | cut -d ' ' -f 2 | rev)
+# Check that the command exists
+gcc --version &> /dev/null
+if [ $? -ne 127 ]; then
 
-if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
-   { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -ge 9 ]; }; then
-	status="${COLOUR_FOREGROUND_GREEN}ok"
-	result=0
+  # Collect the version information
+  version=$(gcc --version | head -n 1 | rev | cut -d ' ' -f 2 | cut -d '-' -f 2 | rev)
 
-	if { [ $(cut -d '.' -f 1 <<< $version) -gt 8 ]; } ||
-	   { [ $(cut -d '.' -f 1 <<< $version) -eq 8 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 2 ]; } ||
-	   { [ $(cut -d '.' -f 1 <<< $version) -eq 8 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 2 ] && [ $(cut -d '.' -f 3 <<< $version) -gt 0 ]; }; then
-		status="${COLOUR_FOREGROUND_YELLOW}warning${COLOUR_RESET}. Versions greater than 8.2.0 have not been tested."
-	fi
+  # Check that it meets the minimum requirements
+  if { [ $(cut -d '.' -f 1 <<< $version) -gt 4 ]; } ||
+     { [ $(cut -d '.' -f 1 <<< $version) -eq 4 ] && [ $(cut -d '.' -f 2 <<< $version) -ge 9 ]; }; then
+	  status="${COLOUR_FOREGROUND_GREEN}ok"
+	  result=0
+
+	  if { [ $(cut -d '.' -f 1 <<< $version) -gt 8 ]; } ||
+	     { [ $(cut -d '.' -f 1 <<< $version) -eq 8 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 2 ]; } ||
+	     { [ $(cut -d '.' -f 1 <<< $version) -eq 8 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 2 ] && [ $(cut -d '.' -f 3 <<< $version) -gt 0 ]; }; then
+		  status="${COLOUR_FOREGROUND_YELLOW}warning${COLOUR_RESET}. Versions greater than 8.2.0 have not been tested."
+	  fi
+  fi
 fi
 
 echo -e $status $COLOUR_RESET

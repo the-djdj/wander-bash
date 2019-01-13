@@ -17,12 +17,19 @@ result=1
 
 echo -n " * Tar                                     "
 
-version=$(tar --version | head -n 1 | cut -d ' ' -f 4)
+# Check that the command exists
+tar --version &> /dev/null
+if [ $? -ne 127 ]; then
 
-if { [ $(cut -d '.' -f 1 <<< $version) -gt 1 ]; } ||
-   { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -ge 22 ]; }; then
-	status="${COLOUR_FOREGROUND_GREEN}ok"
-	result=0
+  # Collect the version information
+  version=$(tar --version | head -n 1 | cut -d ' ' -f 4)
+
+  # Check that it meets the minimum requirements
+  if { [ $(cut -d '.' -f 1 <<< $version) -gt 1 ]; } ||
+     { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -ge 22 ]; }; then
+	  status="${COLOUR_FOREGROUND_GREEN}ok"
+	  result=0
+  fi
 fi
 
 echo -e $status $COLOUR_RESET

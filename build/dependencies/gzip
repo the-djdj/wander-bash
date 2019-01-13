@@ -17,13 +17,20 @@ result=1
 
 echo -n " * Gzip                                    "
 
-version=$(gzip --version | head -n 1 | cut -d ' ' -f 2)
+# Check that the command exists
+gzip --version &> /dev/null
+if [ $? -ne 127 ]; then
 
-if { [ $(cut -d '.' -f 1 <<< $version) -gt 1 ]; } ||
-   { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 3 ]; } ||
-   { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 3 ] && [ $(cut -d '.' -f 3 <<< $version) -ge 12 ]; }; then
-	status="${COLOUR_FOREGROUND_GREEN}ok"
-	result=0
+  # Collect the version information
+  version=$(gzip --version | head -n 1 | cut -d ' ' -f 2)
+
+  # Check that it meets the minimum requirements
+  if { [ $(cut -d '.' -f 1 <<< $version) -gt 1 ]; } ||
+     { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -gt 3 ]; } ||
+     { [ $(cut -d '.' -f 1 <<< $version) -eq 1 ] && [ $(cut -d '.' -f 2 <<< $version) -eq 3 ] && [ $(cut -d '.' -f 3 <<< $version) -ge 12 ]; }; then
+	  status="${COLOUR_FOREGROUND_GREEN}ok"
+	  result=0
+  fi
 fi
 
 echo -e $status $COLOUR_RESET
