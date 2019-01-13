@@ -13,7 +13,7 @@
 
 # Set results
 status="${COLOUR_FOREGROUND_RED} GCC-8.2.0 failed."
-result=0
+result=1
 
 
 
@@ -120,6 +120,13 @@ postconfigure() {
 # The instructions to install the package
 install () {
 	make install
+}
+
+
+
+# The instructions to test the package
+test () {
+    result=0
 }
 
 

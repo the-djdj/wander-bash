@@ -13,7 +13,7 @@
 
 # Set results
 status="${COLOUR_FOREGROUND_RED}Binutils-2.31.1 failed."
-result=0
+result=1
 
 
 
@@ -62,6 +62,13 @@ postconfigure() {
 # The instructions to install the package
 install () {
 	make install
+}
+
+
+
+# The instructions to test the package
+test () {
+    result=0
 }
 
 

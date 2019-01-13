@@ -51,74 +51,140 @@ result=0
 directory=$PWD
 cd $WANDER/sources
 
+# The container method for acquiring sources. This downloads and verifies
 getfile() {
-	mkdir $directory/logs/temp/$2 &> /dev/null
+    mkdir $directory/logs/temp/$2 &> /dev/null
 
-	# Check to see if we can import the source from somewhere
-	if [ ! -z $sources ]; then
-		if [ ! -d $sources ]; then
-			mkdir $sources
-		elif [ -f "$sources/$2" ]; then
-			cp $sources/$2 $SOURCEDIR/
-		fi
-	fi
+    # Check to see if we can import the source from somewhere
+    if [ ! -z $sources ]; then
+        if [ ! -d $sources ]; then
+            mkdir $sources
+        elif [ -f "$sources/$2" ]; then
+            cp $sources/$2 $SOURCEDIR/
+        fi
+    fi
 
-	# And start the download process
-	count=0
-	verify $1 $2 $3
+    # And start the download process
+    count=0
+    verify $1 $2 $3
 
-	# Finally, make sure that our file exists in the other source directory
-	if [ ! -z $sources ]; then
-		cp $SOURCEDIR/$2 $sources/
-	fi
+    # Finally, make sure that our file exists in the other source directory
+    if [ ! -z $sources ]; then
+        cp $SOURCEDIR/$2 $sources/
+    fi
 }
 
+# A simple method to download the sources
 download () {
-	wget --directory-prefix=$SOURCEDIR "$1/$2" &> $directory/logs/temp/$2/wget.log
+    wget --directory-prefix=$SOURCEDIR "$1/$2" &> $directory/logs/temp/$2/wget.log
 }
 
+# A simple method to verify the sources
 verify () {
-	count=$((count + 1))
-	if [ $count = 5 ]; then
-		echo -e "${COLOUR_FOREGROUND_RED}unable to verify sources"
-	elif [ -f "$SOURCEDIR/$2" ]; then
-		if [ $3 != $(md5sum "$SOURCEDIR/$2" | cut -d ' ' -f 1) ]; then
-			rm -rf $2
-			download $1 $2
-			verify $1 $2 $3
-		else
-			: # Verification successful!
-		fi
-	else
-		download $1 $2
-		verify $1 $2 $3
-	fi
+    count=$((count + 1))
+    if [ $count = 5 ]; then
+        echo -e "${COLOUR_FOREGROUND_RED}unable to verify sources"
+    elif [ -f "$SOURCEDIR/$2" ]; then
+        if [ $3 != $(md5sum "$SOURCEDIR/$2" | cut -d ' ' -f 1) ]; then
+            rm -rf $2
+            download $1 $2
+            verify $1 $2 $3
+        else
+            : # Verification successful!
+        fi
+    else
+        download $1 $2
+        verify $1 $2 $3
+    fi
 }
 
+# A simple method to clean up source directories
 cleanup() {
-	rm -rf "$(echo $1 | rev | cut -d '.' -f 3- | rev)/" &> $directory/logs/temp/$1/cleanup.log
+    rm -rf "$(echo $1 | rev | cut -d '.' -f 3- | rev)/" &> $directory/logs/temp/$1/cleanup.log
 }
 
+# The method to decompress source tarballs
 decompress() {
-	cleanup $1
-	tar -xf $SOURCEDIR/$1 -C $WANDER/sources &> $directory/logs/temp/$1/tar.log
+    cleanup $1
+    tar -xf $SOURCEDIR/$1 -C $WANDER/sources &> $directory/logs/temp/$1/tar.log
 }
 
+# The method to change into the source directory
 change_directory () {
-	cd "$(echo $1 | rev | cut -d '.' -f 3- | rev)"
+    cd "$(echo $1 | rev | cut -d '.' -f 3- | rev)"
+}
+
+# The method which does the building of the package
+build () {
+    # Download the file
+    echo -e -n "${COLOUR_FOREGROUND_MAGENTA}downloading"
+    getfile $location $filename $checksum
+    echo -e -n $LINE_UP ; print_heading
+
+    # Unpack the archive
+    echo -e -n "${COLOUR_FOREGROUND_MAGENTA}unpacking"
+    decompress $filename
+    change_directory $filename
+    echo -e -n $LINE_UP ; print_heading
+
+    # Set timer
+    SECONDS=0
+
+    # Preconfigure
+    echo -e -n "${COLOUR_FOREGROUND_MAGENTA}preconfiguring"
+    #preconfigure &> $directory/logs/temp/$filename/preconfigure.log
+    echo -e -n $LINE_UP ; print_heading
+
+    # Configure
+    echo -e -n "${COLOUR_FOREGROUND_MAGENTA}configuring"
+    #configure &> $directory/logs/temp/$filename/configure.log
+    echo -e -n $LINE_UP ; print_heading
+
+    # Compile
+    echo -e -n "${COLOUR_FOREGROUND_MAGENTA}compiling"
+    #compile &> $directory/logs/temp/$filename/compile.log
+    echo -e -n $LINE_UP ; print_heading
+
+    # Postconfigure
+    echo -e -n "${COLOUR_FOREGROUND_MAGENTA}postconfiguring"
+    #postconfigure &> $directory/logs/temp/$filename/postconfigure.log
+    echo -e -n $LINE_UP ; print_heading
+
+    # Install
+    echo -e -n "${COLOUR_FOREGROUND_MAGENTA}installing"
+    #install &> $directory/logs/temp/$filename/install.log
+    echo -e -n $LINE_UP ; print_heading
+
+    # Test
+    echo -e -n "${COLOUR_FOREGROUND_MAGENTA}testing"
+    test &> $directory/logs/temp/$filename/test.log
+    echo -e -n $LINE_UP ; print_heading
+
+    # Go back to the sources directory
+    cd $WANDER/sources
+
+    # Cleanup
+    echo -e -n "${COLOUR_FOREGROUND_MAGENTA}cleaning up"
+    cleanup $filename
+    echo -e -n $LINE_UP ; print_heading
+
+    duration=$SECONDS
+    if [ $result -eq 0 ]; then
+        status="${COLOUR_FOREGROUND_GREEN}ok              ${COLOUR_RESET}($((duration / 3600))h $(((duration / 60) - (duration / 3600 * 60)))m $(($duration % 60))s)"
+    fi
 }
 
 # And do the building
-if [ $result -eq 0 ]; then source $directory/build/temp/binutils_1;    fi
-if [ $result -eq 0 ]; then source $directory/build/temp/gcc_1;		     fi
-if [ $result -eq 0 ]; then source $directory/build/temp/linux_headers; fi
-if [ $result -eq 0 ]; then source $directory/build/temp/glibc;         fi
+if [ $result -eq 0 ]; then source $directory/build/temp/binutils_1;     fi
+if [ $result -eq 0 ]; then source $directory/build/temp/gcc_1;          fi
+if [ $result -eq 0 ]; then source $directory/build/temp/linux_headers;  fi
+if [ $result -eq 0 ]; then source $directory/build/temp/glibc;          fi
 
 # Output results
 if [ $result -eq 0 ]; then
-	status="${COLOUR_FOREGROUND_GREEN}ok"
+    status="${COLOUR_FOREGROUND_GREEN}ok"
 else
-	status="${COLOUR_FOREGROUND_RED}failed"
+    status="${COLOUR_FOREGROUND_RED}failed"
 fi
 
 echo -n -e "Construction $status${COLOUR_RESET}."

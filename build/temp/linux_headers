@@ -13,7 +13,7 @@
 
 # Set results
 status="${COLOUR_FOREGROUND_RED}Linux-4.18.5 API Headers failed."
-result=0
+result=1
 
 
 
@@ -55,6 +55,13 @@ postconfigure() {
 install () {
 	make INSTALL_HDR_PATH=dest headers_install
 	cp -rv dest/include/* /tools/include
+}
+
+
+
+# The instructions to test the package
+test () {
+    result=0
 }
 
 
