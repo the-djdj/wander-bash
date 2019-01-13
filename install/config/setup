@@ -14,58 +14,58 @@ CONFIG_FILE=".config"
 # Check if the config file exists
 if [ ! -f $CONFIG_FILE ]; then
     # The file doesn't exist, so it needs to be written
-	echo "#!/bin/bash"																		>> $CONFIG_FILE
-	echo ""																					>> $CONFIG_FILE
-	echo "# The Wander config file. It contains the basic settings for building the"		>> $CONFIG_FILE
-	echo "# operating system. It's pretty self-explanatory. Don't worry, you got this ;)"	>> $CONFIG_FILE
-	echo ""																					>> $CONFIG_FILE
-	echo ""																					>> $CONFIG_FILE
-	echo "# A swap partition comes in handy when the available memory on a system starts"	>> $CONFIG_FILE
-	echo "# to run low. The Wander build system can create a new swap partition for you if"	>> $CONFIG_FILE
-	echo "# need be. To create a new swap partition (or format an existing partition as"	>> $CONFIG_FILE
-	echo "# swap), enter the name of the partition below. To use an existing swap"			>> $CONFIG_FILE
-	echo "# partition, or simple to bypass this, leave this field blank. If creating a new"	>> $CONFIG_FILE
-	echo "# swap, ensure that the partition has at least 2 Gb of space available."			>> $CONFIG_FILE
-	echo "#"																				>> $CONFIG_FILE
-	echo "# Example: swap-partition=/dev/sda5"												>> $CONFIG_FILE
-	echo "swap_partition="																	>> $CONFIG_FILE
-	echo ""																					>> $CONFIG_FILE
-	echo "# Which partition should Wander be installed onto? If you are planning to use"	>> $CONFIG_FILE
-	echo "# Wander as your primary operating system, a minimum size of 20 Gb is"			>> $CONFIG_FILE
-	echo "# recommended."																	>> $CONFIG_FILE
-	echo "#"																				>> $CONFIG_FILE
-	echo "# Example: os-partition=/dev/sda2"												>> $CONFIG_FILE
-	echo "os_partition=/dev/sdb1"															>> $CONFIG_FILE
-	echo ""																					>> $CONFIG_FILE
+	echo "#!/bin/bash"                                                                      >> $CONFIG_FILE
+	echo ""                                                                                 >> $CONFIG_FILE
+	echo "# The Wander config file. It contains the basic settings for building the"        >> $CONFIG_FILE
+	echo "# operating system. It's pretty self-explanatory. Don't worry, you got this ;)"   >> $CONFIG_FILE
+	echo ""                                                                                 >> $CONFIG_FILE
+	echo ""                                                                                 >> $CONFIG_FILE
+	echo "# A swap partition comes in handy when the available memory on a system starts"   >> $CONFIG_FILE
+	echo "# to run low. The Wander build system can create a new swap partition for you if" >> $CONFIG_FILE
+	echo "# need be. To create a new swap partition (or format an existing partition as"    >> $CONFIG_FILE
+	echo "# swap), enter the name of the partition below. To use an existing swap"          >> $CONFIG_FILE
+	echo "# partition, or simple to bypass this, leave this field blank. If creating a new" >> $CONFIG_FILE
+	echo "# swap, ensure that the partition has at least 2 Gb of space available."          >> $CONFIG_FILE
+	echo "#"                                                                                >> $CONFIG_FILE
+	echo "# Example: swap-partition=/dev/sda5"                                              >> $CONFIG_FILE
+	echo "swap_partition="                                                                  >> $CONFIG_FILE
+	echo ""                                                                                 >> $CONFIG_FILE
+	echo "# Which partition should Wander be installed onto? If you are planning to use"    >> $CONFIG_FILE
+	echo "# Wander as your primary operating system, a minimum size of 20 Gb is"            >> $CONFIG_FILE
+	echo "# recommended."                                                                   >> $CONFIG_FILE
+	echo "#"                                                                                >> $CONFIG_FILE
+	echo "# Example: os-partition=/dev/sda2"                                                >> $CONFIG_FILE
+	echo "os_partition=/dev/sdb1"                                                           >> $CONFIG_FILE
+	echo ""                                                                                 >> $CONFIG_FILE
 	echo "# Should Wander format the partition before building begins? If not, ensure that"	>> $CONFIG_FILE
-	echo "# it is of type ext4. Simply type 'yes' or 'no'."									>> $CONFIG_FILE
-	echo "format_partition=yes"																>> $CONFIG_FILE
-	echo ""																					>> $CONFIG_FILE
-	echo "# What should the local mountpoint for your Wander system be? This is important"	>> $CONFIG_FILE
-	echo "# so that Wander's file system can be mounted properly."							>> $CONFIG_FILE
-	echo "#"																				>> $CONFIG_FILE
-	echo "# Example: wander=/mnt/wander"													>> $CONFIG_FILE
-	echo "wander=/mnt/wander-os"															>> $CONFIG_FILE
-	echo ""																					>> $CONFIG_FILE
-	echo "# If you want to (or have limited bandwidth), you can opt to store sources in a"	>> $CONFIG_FILE
-	echo "# separate directory. By using this method, sources are initially copied into"	>> $CONFIG_FILE
-	echo "# the environment, and all additional ones are copied back afterwards. If you"	>> $CONFIG_FILE
-	echo "# don't feel like making use of this option, just leave the variable blank."		>> $CONFIG_FILE
-	echo "#"																				>> $CONFIG_FILE
-	echo "# NOTE: as this bit of code is executed by the WANDER user, '~' refers to "		>> $CONFIG_FILE
-	echo "# /home/wander by default."														>> $CONFIG_FILE
-	echo "#"																				>> $CONFIG_FILE
-	echo "# Example: sources=~/wander/sources"												>> $CONFIG_FILE
-	echo "sources=~/sources"																>> $CONFIG_FILE
-	echo ""																					>> $CONFIG_FILE
-	echo ""																					>> $CONFIG_FILE
-	echo ""																					>> $CONFIG_FILE
-	echo "# This next batch of settings control which packages will and won't be built."	>> $CONFIG_FILE
-	echo "# You usually don't have to worry about these."									>> $CONFIG_FILE
-	echo "build_temp_binutils_1=yes"														>> $CONFIG_FILE
-	echo "build_temp_gcc_1=yes"																>> $CONFIG_FILE
-	echo "build_temp_linux_headers=yes" 													>> $CONFIG_FILE
-	echo "build_temp_glibc=yes"                                   >> $CONFIG_FILE
+	echo "# it is of type ext4. Simply type 'yes' or 'no'."                                 >> $CONFIG_FILE
+	echo "format_partition=yes"                                                             >> $CONFIG_FILE
+	echo ""                                                                                 >> $CONFIG_FILE
+	echo "# What should the local mountpoint for your Wander system be? This is important"  >> $CONFIG_FILE
+	echo "# so that Wander's file system can be mounted properly."                          >> $CONFIG_FILE
+	echo "#"                                                                                >> $CONFIG_FILE
+	echo "# Example: wander=/mnt/wander"                                                    >> $CONFIG_FILE
+	echo "wander=/mnt/wander-os"                                                            >> $CONFIG_FILE
+	echo ""                                                                                 >> $CONFIG_FILE
+	echo "# If you want to (or have limited bandwidth), you can opt to store sources in a"  >> $CONFIG_FILE
+	echo "# separate directory. By using this method, sources are initially copied into"    >> $CONFIG_FILE
+	echo "# the environment, and all additional ones are copied back afterwards. If you"    >> $CONFIG_FILE
+	echo "# don't feel like making use of this option, just leave the variable blank."      >> $CONFIG_FILE
+	echo "#"                                                                                >> $CONFIG_FILE
+	echo "# NOTE: as this bit of code is executed by the WANDER user, '~' refers to"        >> $CONFIG_FILE
+	echo "# /home/wander by default."                                                       >> $CONFIG_FILE
+	echo "#"                                                                                >> $CONFIG_FILE
+	echo "# Example: sources=~/wander/sources"                                              >> $CONFIG_FILE
+	echo "sources=~/sources"                                                                >> $CONFIG_FILE
+	echo ""                                                                                 >> $CONFIG_FILE
+	echo ""                                                                                 >> $CONFIG_FILE
+	echo ""                                                                                 >> $CONFIG_FILE
+	echo "# This next batch of settings control which packages will and won't be built."    >> $CONFIG_FILE
+	echo "# You usually don't have to worry about these."                                   >> $CONFIG_FILE
+	echo "build_temp_binutils_1=yes"                                                        >> $CONFIG_FILE
+	echo "build_temp_gcc_1=yes"                                                             >> $CONFIG_FILE
+	echo "build_temp_linux_headers=yes"                                                     >> $CONFIG_FILE
+	echo "build_temp_glibc=yes"                                                             >> $CONFIG_FILE
 
 	# And notify the user that we've created a config file, and that they must
 	# look at it.
