@@ -17,6 +17,13 @@ echo -n " * Setting up the root file system         "
 # Check that the format partition variable is defined
 if [ $format_partition = "yes" ]; then
 
+	# Check that the partition isn't mounted
+	cmd=$(grep -qs $os_partition /proc/mounts)
+	if [ $? -eq 0 ]; then
+		# Unmount the os_partition
+		umount $os_partition &> logs/init/umount.log
+  fi
+
 	# Format the partition
 	mkfs -v -t ext4 $os_partition &> logs/init/mkfs.log
 
