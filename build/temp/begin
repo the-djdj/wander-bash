@@ -58,22 +58,14 @@ getfile() {
 	if [ ! -z $sources ]; then
 		if [ ! -d $sources ]; then
 			mkdir $sources
-		fi
-
-		if [ -f "$sources/$2" ]; then
+		elif [ -f "$sources/$2" ]; then
 			cp $sources/$2 $SOURCEDIR/
 		fi
 	fi
 
 	# And start the download process
-	if [ -f "$SOURCEDIR/$2" ]; then
-		if [ $3 != $(md5sum "$SOURCEDIR/$2" | cut -d ' ' -f 1) ]; then
-			rm -rf $2
-			download $1 $2
-		fi
-	else
-		download $1 $2
-	fi
+	count=0
+	verify $1 $2 $3
 
 	# Finally, make sure that our file exists in the other source directory
 	if [ ! -z $sources ]; then
@@ -83,6 +75,24 @@ getfile() {
 
 download () {
 	wget --directory-prefix=$SOURCEDIR "$1/$2" &> $directory/logs/temp/$2/wget.log
+}
+
+verify () {
+	count=$((count + 1))
+	if [ $count = 5 ]; then
+		echo -e "${COLOUR_FOREGROUND_RED}unable to verify sources"
+	elif [ -f "$SOURCEDIR/$2" ]; then
+		if [ $3 != $(md5sum "$SOURCEDIR/$2" | cut -d ' ' -f 1) ]; then
+			rm -rf $2
+			download $1 $2
+			verify $1 $2 $3
+		else
+			: # Verification successful!
+		fi
+	else
+		download $1 $2
+		verify $1 $2 $3
+	fi
 }
 
 cleanup() {
