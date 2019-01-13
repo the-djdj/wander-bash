@@ -132,27 +132,27 @@ build () {
 
     # Preconfigure
     echo -e -n "${COLOUR_FOREGROUND_MAGENTA}preconfiguring"
-    #preconfigure &> $directory/logs/temp/$filename/preconfigure.log
+    preconfigure &> $directory/logs/temp/$filename/preconfigure.log
     echo -e -n $LINE_UP ; print_heading
 
     # Configure
     echo -e -n "${COLOUR_FOREGROUND_MAGENTA}configuring"
-    #configure &> $directory/logs/temp/$filename/configure.log
+    configure &> $directory/logs/temp/$filename/configure.log
     echo -e -n $LINE_UP ; print_heading
 
     # Compile
     echo -e -n "${COLOUR_FOREGROUND_MAGENTA}compiling"
-    #compile &> $directory/logs/temp/$filename/compile.log
+    compile &> $directory/logs/temp/$filename/compile.log
     echo -e -n $LINE_UP ; print_heading
 
     # Postconfigure
     echo -e -n "${COLOUR_FOREGROUND_MAGENTA}postconfiguring"
-    #postconfigure &> $directory/logs/temp/$filename/postconfigure.log
+    postconfigure &> $directory/logs/temp/$filename/postconfigure.log
     echo -e -n $LINE_UP ; print_heading
 
     # Install
     echo -e -n "${COLOUR_FOREGROUND_MAGENTA}installing"
-    #install &> $directory/logs/temp/$filename/install.log
+    install &> $directory/logs/temp/$filename/install.log
     echo -e -n $LINE_UP ; print_heading
 
     # Test

@@ -139,59 +139,7 @@ print_heading
 
 # Do the package things
 if [ $build_temp_gcc_1 = "yes" ] ; then
-
-	# Download the file
-	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}downloading"
-	getfile $location $filename $checksum
-	getfile $location_mpfr $filename_mpfr $checksum_mpfr
-	getfile $location_gmp $filename_gmp $checksum_gmp
-	getfile $location_mpc $filename_mpc $checksum_mpc
-	echo -e -n $LINE_UP ; print_heading
-
-	# Unpack the archive
-	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}unpacking"
-	decompress $filename
-	change_directory $filename
-	echo -e -n $LINE_UP ; print_heading
-
-	# Set timer
-	SECONDS=0
-
-	# Preconfigure
-	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}preconfiguring"
-    preconfigure &> $directory/logs/temp/$filename/preconfigure.log
-	echo -e -n $LINE_UP ; print_heading
-
-	# Configure
-	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}configuring"
-	configure &> $directory/logs/temp/$filename/configure.log
-	echo -e -n $LINE_UP ; print_heading
-
-	# Compile
-	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}compiling"
-	compile &> $directory/logs/temp/$filename/compile.log
-	echo -e -n $LINE_UP ; print_heading
-
-	# Postconfigure
-	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}postconfiguring"
-	postconfigure &> $directory/logs/temp/$filename/postconfigure.log
-	echo -e -n $LINE_UP ; print_heading
-
-	# Install
-    echo -e -n "${COLOUR_FOREGROUND_MAGENTA}installing"
-	install &> $directory/logs/temp/$filename/install.log
-    echo -e -n $LINE_UP ; print_heading
-
-	# Go back to the sources directory
-	cd $WANDER/sources
-
-	# Cleanup
-	echo -e -n "${COLOUR_FOREGROUND_MAGENTA}cleaning up"
-	cleanup $filename
-	echo -e -n $LINE_UP ; print_heading
-
-	duration=$SECONDS
-	status="${COLOUR_FOREGROUND_GREEN}ok              ${COLOUR_RESET}($((duration / 3600))h $(((duration / 60) - (duration / 3600 * 60)))m $(($duration % 60))s)"
+    build
 else
 	status="${COLOUR_FOREGROUND_BLUE}skipped"
 fi
