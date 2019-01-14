@@ -132,7 +132,7 @@ test () {
 
 
 print_heading () {
-	echo -n " * GCC      (Pass 1)                       "
+	echo -n " * GCC       (Pass 1)                      "
 }
 
 print_heading
