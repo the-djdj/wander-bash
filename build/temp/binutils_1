@@ -84,6 +84,7 @@ if [ $build_temp_binutils_1 = "yes" ] ; then
     build
 else
 	status="${COLOUR_FOREGROUND_BLUE}skipped"
+    result=0
 fi
 
 unset filename
