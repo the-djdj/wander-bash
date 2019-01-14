@@ -66,6 +66,7 @@ if [ ! -f $CONFIG_FILE ]; then
     echo "build_temp_gcc_1=yes"                                                             >> $CONFIG_FILE
     echo "build_temp_linux_headers=yes"                                                     >> $CONFIG_FILE
     echo "build_temp_glibc=yes"                                                             >> $CONFIG_FILE
+    echo "build_temp_libstdcpp=yes"                                                         >> $CONFIG_FILE
 
     # And notify the user that we've created a config file, and that they must
     # look at it.

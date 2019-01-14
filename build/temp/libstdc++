@@ -1,0 +1,93 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for building Libstdc++ in the temporary system
+#
+# The package being built is:
+#  * Libstdc++ from GCC-8.2.0
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Set results
+status="${COLOUR_FOREGROUND_RED}Libstdc++ from GCC-8.2.0 failed."
+result=1
+
+
+
+filename="gcc-8.2.0.tar.xz"
+location="http://ftp.gnu.org/gnu/gcc/gcc-8.2.0/"
+checksum="4ab282f414676496483b3e1793d07862"
+
+
+
+# The instructions before the package is configured
+preconfigure () {
+    mkdir -v build
+    cd       build
+}
+
+
+
+# The instructions for configuring the package
+configure () {
+    ../libstdc++-v3/configure           \
+        --host=$WANDER_TGT              \
+        --prefix=/tools                 \
+        --disable-multilib              \
+        --disable-nls                   \
+        --disable-libstdcxx-threads     \
+        --disable-libstdcxx-pch         \
+        --with-gxx-include-dir=/tools/$WANDER_TGT/include/c++/8.2.0
+}
+
+
+
+# The instructions for compiling the package
+compile() {
+    make
+}
+
+
+
+# The instructions after the package is configured
+postconfigure() {
+    :
+}
+
+
+
+# The instructions to install the package
+install () {
+    make install
+}
+
+
+
+# The instructions to test the package
+test () {
+    result=0
+}
+
+
+print_heading () {
+    echo -n " * Libstdc++ (from GCC)                    "
+}
+
+print_heading
+
+# Do the package things
+if [ $build_temp_libstdcpp = "yes" ] ; then
+    build
+else
+    status="${COLOUR_FOREGROUND_BLUE}skipped"
+    result=0
+fi
+
+unset filename
+unset location
+unset checksum
+
+echo -e $status $COLOUR_RESET
+return $result
