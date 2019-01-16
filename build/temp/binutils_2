@@ -1,0 +1,105 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for building the first pass of Binutils in the
+# temporary system
+#
+# The package being built is:
+#  * Binutils-2.31.1 - Pass 2
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Set results
+status="${COLOUR_FOREGROUND_RED}Binutils-2.31.1 failed."
+result=1
+
+
+
+filename="binutils-2.31.1.tar.xz"
+location="http://ftp.gnu.org/gnu/binutils/"
+checksum="5b7c9d4ce96f507d95c1b9a255e52418"
+
+
+
+# The instructions before the package is configured
+preconfigure () {
+    mkdir -v build
+    cd       build
+}
+
+
+
+# The instructions for configuring the package
+configure () {
+    CC=$WANDER_TGT-gcc             \
+    AR=$WANDER_TGT-ar              \
+    RANLIB=$WANDER_TGT-ranlib      \
+    ../configure                   \
+        --prefix=/tools            \
+        --disable-nls              \
+        --disable-werror           \
+        --with-lib-path=/tools/lib \
+        --with-sysroot
+}
+
+
+
+# The instructions for compiling the package
+compile() {
+	make
+}
+
+
+
+# The instructions after the package is configured
+postconfigure() {
+	:
+}
+
+
+
+# The instructions to install the package
+install () {
+	make install
+}
+
+
+
+# The instructions after the package is installed
+postinstall() {
+    make -C ld clean
+    make -C ld LIB_PATH=/usr/lib:/lib
+    cp -v ld/ld-new /tools/bin
+}
+
+
+
+# The instructions to test the package
+test () {
+    result=0
+}
+
+
+
+print_heading () {
+	echo -n " * Binutils  (Pass 2)                      "
+}
+
+print_heading
+
+# Do the package things
+if [ $build_temp_binutils_2 = "yes" ] ; then
+    build
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+    result=0
+fi
+
+unset filename
+unset location
+unset checksum
+
+echo -e $status $COLOUR_RESET
+return $result
