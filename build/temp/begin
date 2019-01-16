@@ -185,7 +185,7 @@ if [ $result -eq 0 ]; then source $directory/build/temp/gcc_1;          fi
 if [ $result -eq 0 ]; then source $directory/build/temp/linux_headers;  fi
 if [ $result -eq 0 ]; then source $directory/build/temp/glibc;          fi
 if [ $result -eq 0 ]; then source $directory/build/temp/libstdc++;      fi
-if [ $result -eq 0 ]; then source $directory/build/temp/binutils_2      fi
+if [ $result -eq 0 ]; then source $directory/build/temp/binutils_2;     fi
 
 # Output results
 if [ $result -eq 0 ]; then
