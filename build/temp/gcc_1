@@ -124,6 +124,13 @@ install () {
 
 
 
+# The instructions after the package is installed
+postinstall() {
+    :
+}
+
+
+
 # The instructions to test the package
 test () {
     result=0

@@ -155,6 +155,11 @@ build () {
     install &> $directory/logs/temp/$filename/install.log
     echo -e -n $LINE_UP ; print_heading
 
+    # Postinstall
+    echo -e -e "${COLOUR_FOREGROUND_MAGENTA}postinstalling"
+    postinstall &> $directory/logs/temp/$filename/postinstall.log
+    echo -e -n $LINE_UP ; print_heading
+
     # Test
     echo -e -n "${COLOUR_FOREGROUND_MAGENTA}testing"
     test &> $directory/logs/temp/$filename/test.log
