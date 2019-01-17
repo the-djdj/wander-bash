@@ -190,6 +190,7 @@ if [ $result -eq 0 ]; then source $directory/build/temp/libstdc++;      fi
 if [ $result -eq 0 ]; then source $directory/build/temp/binutils_2;     fi
 if [ $result -eq 0 ]; then source $directory/build/temp/gcc_2;          fi
 if [ $result -eq 0 ]; then source $directory/build/temp/tcl;            fi
+if [ $result -eq 0 ]; then source $directory/build/temp/expect;         fi
 
 # Output results
 if [ $result -eq 0 ]; then

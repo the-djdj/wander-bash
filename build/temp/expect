@@ -1,0 +1,97 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for building the Expect package used in the
+# temporary system
+#
+# The package being built is:
+#  * Expect-5.45.4
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Set results
+status="${COLOUR_FOREGROUND_RED}Expect-5.45.4 failed."
+result=1
+
+
+
+filename="expect5.45.4.tar.gz"
+location="https://prdownloads.sourceforge.net/expect/"
+checksum="00fce8de158422f5ccd2666512329bd2"
+
+
+
+# The instructions before the package is configured
+preconfigure () {
+    cp -v configure{,.orig}
+    sed 's:/usr/local/bin:/bin:' configure.orig > configure
+}
+
+
+
+# The instructions for configuring the package
+configure () {
+    ./configure --prefix=/tools       \
+                --with-tcl=/tools/lib \
+                --with-tclinclude=/tools/include
+}
+
+
+
+# The instructions for compiling the package
+compile() {
+	make
+}
+
+
+
+# The instructions after the package is configured
+postconfigure() {
+	:
+}
+
+
+
+# The instructions to install the package
+install () {
+	make SCRIPTS="" install
+}
+
+
+
+# The instructions after the package is installed
+postinstall() {
+    :
+}
+
+
+
+# The instructions to test the package
+test () {
+    result=0
+}
+
+
+
+print_heading () {
+	echo -n " * Expect                                  "
+}
+
+print_heading
+
+# Do the package things
+if [ $build_temp_expect = "yes" ] ; then
+    build
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+    result=0
+fi
+
+#unset filename
+#unset location
+#unset checksum
+
+echo -e $status $COLOUR_RESET
+return $result

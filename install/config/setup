@@ -70,6 +70,7 @@ if [ ! -f $CONFIG_FILE ]; then
     echo "build_temp_binutils_2=yes"                                                        >> $CONFIG_FILE
     echo "build_temp_gcc_2=yes"                                                             >> $CONFIG_FILE
     echo "build_temp_tcl=yes"                                                               >> $CONFIG_FILE
+    echp "build_temp_expect=yes"                                                            >> $CONFIG_FILE
 
     # And notify the user that we've created a config file, and that they must
     # look at it.
