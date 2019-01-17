@@ -12,6 +12,3 @@ source install/var/takedown
 
 # Take down the colours
 source install/colour/takedown
-
-# Take down the config
-source install/config/takedown
