@@ -1,0 +1,169 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for building the first pass of GCC in the
+# temporary system
+#
+# The package being built is:
+#  *  GCC-8.2.0 - Pass 1
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Set results
+status="${COLOUR_FOREGROUND_RED} GCC-8.2.0 failed."
+result=1
+
+
+
+filename="gcc-8.2.0.tar.xz"
+location="http://ftp.gnu.org/gnu/gcc/gcc-8.2.0/"
+checksum="4ab282f414676496483b3e1793d07862"
+
+filename_mpfr="mpfr-4.0.1.tar.xz"
+location_mpfr="http://www.mpfr.org/mpfr-4.0.1/"
+checksum_mpfr="b8dd19bd9bb1ec8831a6a582a7308073"
+
+filename_gmp="gmp-6.1.2.tar.xz"
+location_gmp="http://ftp.gnu.org/gnu/gmp/"
+checksum_gmp="f58fa8001d60c4c77595fbbb62b63c1d"
+
+filename_mpc="mpc-1.1.0.tar.gz"
+location_mpc="https://ftp.gnu.org/gnu/mpc/"
+checksum_mpc="4125404e41e482ec68282a2e687f6c73"
+
+
+
+# The instructions before the package is configured
+preconfigure () {
+    # Unpack some GCC dependencies
+    tar -xf ../mpfr-4.0.1.tar.xz
+    mv -v mpfr-4.0.1 mpfr
+    tar -xf ../gmp-6.1.2.tar.xz
+    mv -v gmp-6.1.2 gmp
+    tar -xf ../mpc-1.1.0.tar.gz
+    mv -v mpc-1.1.0 mpc
+
+    # Create full internal header
+    cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
+        `dirname $($WANDER_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h
+
+	# Change the location of GCC's default dynamic linker to use the one nstalled
+	# in /tools. Also remove /usr/include from GCC's include search path.
+    for file in gcc/config/{linux,i386/linux{,64}}.h
+    do
+        cp -uv $file{,.orig}
+        sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
+            -e 's@/usr@/tools@g' $file.orig > $file
+        echo '
+#undef STANDARD_STARTFILE_PREFIX_1
+#undef STANDARD_STARTFILE_PREFIX_2
+#define STANDARD_STARTFILE_PREFIX_1 "/tools/lib/"
+#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file
+        touch $file.orig
+    done
+
+	# On x86_64 hosts, set the default directory name for 64-bit libraries to “lib”
+    case $(uname -m) in
+        x86_64)
+            sed -e '/m64=/s/lib64/lib/' \
+                -i.orig gcc/config/i386/t-linux64
+            ;;
+    esac
+
+	# Use a specific build change_directory
+	mkdir -v build
+	cd       build
+}
+
+
+
+# The instructions for configuring the package
+configure () {
+    CC=$WANDER_TGT-gcc                                 \
+    CXX=$WANDER_TGT-g++                                \
+    AR=$WANDER_TGT-ar                                  \
+    RANLIB=$WANDER_TGT-ranlib                          \
+    ../configure                                       \
+        --prefix=/tools                                \
+        --with-local-prefix=/tools                     \
+        --with-native-system-header-dir=/tools/include \
+        --enable-languages=c,c++                       \
+        --disable-libstdcxx-pch                        \
+        --disable-multilib                             \
+        --disable-bootstrap                            \
+        --disable-libgomp
+}
+
+
+
+# The instructions for compiling the package
+compile() {
+	make
+}
+
+
+
+# The instructions after the package is configured
+postconfigure() {
+	:
+}
+
+
+
+# The instructions to install the package
+install () {
+	make install
+}
+
+
+
+# The instructions after the package is installed
+postinstall() {
+    # Create a symlink to cc
+    ln -sv gcc /tools/bin/cc
+}
+
+
+
+# The instructions to test the package
+test () {
+    # Create a test file
+    echo 'int main(){}' > dummy.c
+    # Compile the test file
+    cc dummy.c
+    # Verify that the output is correct
+    output="$(echo $(readelf -l a.out | grep ': /tools') | sed 's/^ *//g')"
+    echo $output
+    if [ "$output" = "[Requesting program interpreter: /tools/lib64/ld-linux-x86-64.so.2]" ] ||
+       [ "$output" = "[Requesting program interpreter: /tools/lib/ld-linux.so.2]" ];
+    then
+        result=0
+    fi
+    # And cleanup the test file
+    rm -v dummy.c a.out
+}
+
+
+
+print_heading () {
+	echo -n " * GCC       (Pass 2)                      "
+}
+
+print_heading
+
+# Do the package things
+if [ $build_temp_gcc_2 = "yes" ] ; then
+    build
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+    result=0
+fi
+
+unset filename
+unset location
+unset checksum
+
+echo -e $status $COLOUR_RESET
+return $result
