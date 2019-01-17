@@ -1,0 +1,102 @@
+#!/bin/bash
+
+#
+# This file contains the scripts for building the Tcl package used in the
+# temporary system
+#
+# The package being built is:
+#  * Tcl-8.6.8
+#
+# @author the_DJDJ
+# @since  8.3-systemd
+#
+
+# Set results
+status="${COLOUR_FOREGROUND_RED}Tcl-8.6.8 failed."
+result=1
+
+
+
+filename="tcl8.6.8-src.tar.gz"
+location="https://downloads.sourceforge.net/tcl/"
+checksum="81656d3367af032e0ae6157eff134f89"
+
+
+
+# The instructions before the package is configured
+preconfigure () {
+	:
+}
+
+
+
+# The instructions for configuring the package
+configure () {
+    cd unix
+    ./configure --prefix=/tools
+}
+
+
+
+# The instructions for compiling the package
+compile() {
+	make
+}
+
+
+
+# The instructions after the package is configured
+postconfigure() {
+	TZ=UTC make test
+}
+
+
+
+# The instructions to install the package
+install () {
+	make install
+}
+
+
+
+# The instructions after the package is installed
+postinstall() {
+    # Make the installed library writable so debugging symbols can be removed later
+    chmod -v u+w /tools/lib/libtcl8.6.so
+
+    # Install Tcl's headers
+    make install-private-headers
+
+    # Now make a necessary symbolic link
+    ln -sv tclsh8.6 /tools/bin/tclsh
+}
+
+
+
+# The instructions to test the package
+test () {
+    result=0
+}
+
+
+
+print_heading () {
+	echo -n " * Tcl                                     "
+}
+
+print_heading
+
+# Do the package things
+if [ $build_temp_tcl = "yes" ] ; then
+    build
+else
+	status="${COLOUR_FOREGROUND_BLUE}skipped"
+    result=0
+fi
+
+unset filename
+unset location
+unset checksum
+
+echo -e $status $COLOUR_RESET
+return $result

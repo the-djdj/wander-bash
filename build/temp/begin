@@ -100,7 +100,8 @@ verify () {
 
 # A simple method to clean up source directories
 cleanup() {
-    rm -rf "$(echo $1 | rev | cut -d '.' -f 3- | rev)/" &> $directory/logs/temp/$1/cleanup.log
+    SOURCEDIRNAME="$(echo $1 | rev | cut -d '.' -f 3- | rev)"
+    rm -rf "${SOURCEDIRNAME//-src}/" &> $directory/logs/temp/$1/cleanup.log
 }
 
 # The method to decompress source tarballs
@@ -111,7 +112,8 @@ decompress() {
 
 # The method to change into the source directory
 change_directory () {
-    cd "$(echo $1 | rev | cut -d '.' -f 3- | rev)"
+    SOURCEDIRNAME="$(echo $1 | rev | cut -d '.' -f 3- | rev)"
+    cd "${SOURCEDIRNAME//-src}"
 }
 
 # The method which does the building of the package
@@ -187,6 +189,7 @@ if [ $result -eq 0 ]; then source $directory/build/temp/glibc;          fi
 if [ $result -eq 0 ]; then source $directory/build/temp/libstdc++;      fi
 if [ $result -eq 0 ]; then source $directory/build/temp/binutils_2;     fi
 if [ $result -eq 0 ]; then source $directory/build/temp/gcc_2;          fi
+if [ $result -eq 0 ]; then source $directory/build/temp/tcl;            fi
 
 # Output results
 if [ $result -eq 0 ]; then

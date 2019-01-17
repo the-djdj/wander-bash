@@ -25,3 +25,4 @@ unset build_temp_glibc
 unset build_temp_libstdcpp
 unset build_temp_binutils_2
 unset build_temp_gcc_2
+unset build_temp_tcl
