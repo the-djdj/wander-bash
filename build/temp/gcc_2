@@ -12,7 +12,7 @@
 #
 
 # Set results
-status="${COLOUR_FOREGROUND_RED} GCC-8.2.0 failed."
+status="${COLOUR_FOREGROUND_RED}GCC-8.2.0 failed."
 result=1
 
 
