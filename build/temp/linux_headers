@@ -87,9 +87,6 @@ else
     result=0
 fi
 
-unset filename
-unset location
-unset checksum
 
 echo -e $status $COLOUR_RESET
 return $result
